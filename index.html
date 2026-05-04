@@ -1,1 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Funding Grade — Business Loan Readiness Estimator</title>
+  <meta name="description" content="Find out if your business is ready for a loan in 60 seconds. Get an instant readiness score and plain-English explanation — free, no login required." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Funding Grade — Business Loan Readiness Estimator" />
+  <meta property="og:description" content="Get your free business loan readiness score instantly. No login. No sales pitch." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.fundinggrade.com" />
+  <link rel="canonical" href="https://www.fundinggrade.com/" />
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Funding Grade",
+    "description": "Free business loan readiness estimator. Get an instant score and AI-powered plain-English breakdown of your funding readiness.",
+    "url": "https://www.fundinggrade.com",
+    "applicationCategory": "FinanceApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8868825563724751" crossorigin="anonymous"></script>
+  <meta name="fo-verify" content="d66a5fcb-feef-4456-945a-0562772ef815" />
+
+  <style>
+    /* ---- MODE TOGGLE ---- */
+    .mode-toggle-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+    .mode-toggle {
+      display: flex;
+      background: #f0ede8;
+      border-radius: 10px;
+      padding: 4px;
+      gap: 2px;
+    }
+    .mode-btn {
+      padding: 9px 28px;
+      border: none;
+      background: transparent;
+      border-radius: 7px;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.01em;
+    }
+    .mode-btn.active {
+      background: white;
+      color: #1a1a1a;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+    }
+    .mode-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      background: #C9A84C;
+      color: white;
+      border-radius: 4px;
+      padding: 1px 5px;
+      margin-left: 5px;
+      vertical-align: middle;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    /* ---- ADVANCED FORM STEPS ---- */
+    .adv-form-step { display: none; }
+    .adv-form-step.active { display: block; }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+    .input-group-label {
+      display: block;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 7px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+    .input-hint {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.75rem;
+      color: #aaa;
+      margin-top: 5px;
+      line-height: 1.4;
+    }
+    .dollar-input {
+      position: relative;
+    }
+    .dollar-input::before {
+      content: '$';
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1rem;
+      color: #bbb;
+      pointer-events: none;
+    }
+    .dollar-input input[type="number"] {
+      width: 100%;
+      padding: 13px 14px 13px 28px;
+      border: 1.5px solid #e5e0d8;
+      border-radius: 8px;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1rem;
+      color: #1a1a1a;
+      background: #fafaf8;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+      -moz-appearance: textfield;
+    }
+    .dollar-input input[type="number"]::-webkit-outer-spin-button,
+    .dollar-input input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .dollar-input input[type="number"]:focus {
+      outline: none;
+      border-color: #C9A84C;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+    }
+    .or-divider {
+      text-align: center;
+      color: #ccc;
+      font-size: 0.7rem;
+      font-family: 'IBM Plex Sans', sans-serif;
+      margin: 14px 0;
+      position: relative;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .or-divider::before, .or-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 44%;
+      height: 1px;
+      background: #ece8e0;
+    }
+    .or-divider::before { left: 0; }
+    .or-divider::after { right: 0; }
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 560px) {
+      .input-row { grid-template-columns: 1fr; }
+    }
+
+    /* ---- DSCR RESULTS CARD ---- */
+    .dscr-card {
+      background: linear-gradient(140deg, #111827 0%, #1e2a3a 100%);
+      border-radius: 16px;
+      padding: 32px 28px 28px;
+      margin-bottom: 24px;
+      text-align: center;
+      color: white;
+    }
+    .dscr-eyebrow {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 10px;
+    }
+    .dscr-ratio {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .dscr-ratio.dscr--strong   { color: #4ade80; }
+    .dscr-ratio.dscr--good     { color: #86efac; }
+    .dscr-ratio.dscr--adequate { color: #fcd34d; }
+    .dscr-ratio.dscr--tight    { color: #fb923c; }
+    .dscr-ratio.dscr--negative { color: #f87171; }
+    .dscr-ratio.dscr--none     { color: #93c5fd; }
+    .dscr-meaning {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      max-width: 340px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .dscr-bands {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .dscr-band {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.05);
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .dscr-band.active-band {
+      color: white;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* ---- ADVANCED INPUTS TOOLTIP ---- */
+    .adv-intro {
+      background: #f7f4ef;
+      border-left: 3px solid #C9A84C;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.8125rem;
+      color: #666;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">Funding <span>Grade</span></div>
+      <nav class="header-nav">
+        <a href="#how-it-works">How It Works</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-badge">Free · No Login · Instant Results</div>
+      <h1>Does your business<br /><em>qualify for a loan?</em></h1>
+      <p class="hero-sub">Answer 8 questions. Get your funding readiness score, a plain-English breakdown of your chances, and exactly what's holding you back — in under 60 seconds.</p>
+      <a href="#estimator" class="btn-primary">Check My Score →</a>
+      <div class="hero-trust">
+        <span>🔒 We never sell your data</span>
+        <span>·</span>
+        <span>No credit check required</span>
+        <span>·</span>
+        <span>Built by lending professionals</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Estimator -->
+  <section class="estimator-section" id="estimator">
+    <div class="container">
+      <div class="estimator-card">
+
+        <!-- Mode Toggle -->
+        <div class="mode-toggle-wrap">
+          <div class="mode-toggle">
+            <button class="mode-btn active" id="simpleBtn" onclick="setMode('simple')">Simple</button>
+            <button class="mode-btn" id="advancedBtn" onclick="setMode('advanced')">Advanced <span class="mode-badge">DSCR</span></button>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-wrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-label" id="progressLabel">Step 1 of 8</div>
+
+        <!-- ======================== -->
+        <!-- SIMPLE FORM (existing)  -->
+        <!-- ======================== -->
+        <form id="loanForm" novalidate>
+
+          <!-- Step 1: Annual Revenue -->
+          <div class="form-step active" data-step="1">
+            <div class="step-icon">💰</div>
+            <h2>What is your business's annual revenue?</h2>
+            <p class="step-hint">Use your most recent full year's gross revenue.</p>
+            <div class="options-grid">
+              <label class="option-card"><input type="radio" name="revenue" value="under50k" /><span>Under $50,000</span></label>
+              <label class="option-card"><input type="radio" name="revenue" value="50k_150k" /><span>$50,000 – $150,000</span></label>
+              <label class="option-card"><input type="radio" name="revenue" value="150k_500k" /><span>$150,000 – $500,000</span></label>
+              <label class="option-card"><input type="radio" name="revenue" value="500k_1m" /><span>$500,000 – $1,000,000</span></label>
+              <label class="option-card"><input type="radio" name="revenue" value="over1m" /><span>Over $1,000,000</span></label>
+            </div>
+            <div class="step-nav"><button type="button" class="btn-next" onclick="nextStep(1)">Next →</button></div>
+          </div>
+
+          <!-- Step 2: Time in Business -->
+          <div class="form-step" data-step="2">
+            <div class="step-icon">📅</div>
+            <h2>How long has your business been operating?</h2>
+            <p class="step-hint">Count from the date you first opened or incorporated.</p>
+            <div class="options-grid">
+              <label class="option-card"><input type="radio" name="timeInBusiness" value="under6mo" /><span>Under 6 months</span></label>
+              <label class="option-card"><input type="radio" name="timeInBusiness" value="6mo_12mo" /><span>6 – 12 months</span></label>
+              <label class="option-card"><input type="radio" name="timeInBusiness" value="1yr_2yr" /><span>1 – 2 years</span></label>
+              <label class="option-card"><input type="radio" name="timeInBusiness" value="2yr_5yr" /><span>2 – 5 years</span></label>
+              <label class="option-card"><input type="radio" name="timeInBusiness" value="over5yr" /><span>5+ years</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevStep(2)">← Back</button>
+              <button type="button" class="btn-next" onclick="nextStep(2)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Credit Score -->
+          <div class="form-step" data-step="3">
+            <div class="step-icon">📊</div>
+            <h2>What is your personal credit score range?</h2>
+            <p class="step-hint">Most lenders check the owner's personal credit. Use a free tool like Credit Karma if unsure.</p>
+            <div class="options-grid">
+              <label class="option-card"><input type="radio" name="creditScore" value="under580" /><span>Under 580</span></label>
+              <label class="option-card"><input type="radio" name="creditScore" value="580_619" /><span>580 – 619</span></label>
+              <label class="option-card"><input type="radio" name="creditScore" value="620_659" /><span>620 – 659</span></label>
+              <label class="option-card"><input type="radio" name="creditScore" value="660_699" /><span>660 – 699</span></label>
+              <label class="option-card"><input type="radio" name="creditScore" value="700_739" /><span>700 – 739</span></label>
+              <label class="option-card"><input type="radio" name="creditScore" value="740plus" /><span>740 or above</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevStep(3)">← Back</button>
+              <button type="button" class="btn-next" onclick="nextStep(3)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Step 4: Existing Debt -->
+          <div class="form-step" data-step="4">
+            <div class="step-icon">🏦</div>
+            <h2>How much existing business debt do you carry?</h2>
+            <p class="step-hint">Include all outstanding loans, lines of credit, and MCA balances.</p>
+            <div class="options-grid">
+              <label class="option-card"><input type="radio" name="existingDebt" value="none" /><span>None</span></label>
+              <label class="option-card"><input type="radio" name="existingDebt" value="under25k" /><span>Under $25,000</span></label>
+              <label class="option-card"><input type="radio" name="existingDebt" value="25k_100k" /><span>$25,000 – $100,000</span></label>
+              <label class="option-card"><input type="radio" name="existingDebt" value="100k_500k" /><span>$100,000 – $500,000</span></label>
+              <label class="option-card"><input type="radio" name="existingDebt" value="over500k" /><span>Over $500,000</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevStep(4)">← Back</button>
+              <button type="button" class="btn-next" onclick="nextStep(4)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Step 5: Industry -->
+          <div class="form-step" data-step="5">
+            <div class="step-icon">🏢</div>
+            <h2>What industry is your business in?</h2>
+            <p class="step-hint">Lenders rate industry risk differently. This impacts your approval odds.</p>
+            <div class="options-grid options-grid--3col">
+              <label class="option-card"><input type="radio" name="industry" value="professional" /><span>Professional Services</span></label>
+              <label class="option-card"><input type="radio" name="industry" value="healthcare" /><span>Healthcare</span></label>
+              <label class="option-card"><input type="radio" name="industry" value="construction" /><span>Construction / Trades</span></label>
+              <label class="option-card"><input type="radio" name="industry" value="retail" /><span>Retail</span></label>
+              <label class="option-card"><input type="radio" name="industry" value="restaurant" /><span>Restaurant / Food Service</span></label>
+              <label class="option-card"><input type="radio" name="industry" value="ecommerce" /><span>E-Commerce</span></label>
+              <label class="option-card"><input type="radio" name="industry" value="manufacturing" /><span>Manufacturing</span></label>
+              <label class="option-card"><input type="radio" name="industry" value="realestate" /><span>Real Estate</span></label>
+              <label class="option-card"><input type="radio" name="industry" value="other" /><span>Other</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevStep(5)">← Back</button>
+              <button type="button" class="btn-next" onclick="nextStep(5)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Step 6: Bank Balance -->
+          <div class="form-step" data-step="6">
+            <div class="step-icon">🏧</div>
+            <h2>What is your average monthly business checking balance?</h2>
+            <p class="step-hint">Lenders review 3 months of bank statements. Average your typical end-of-month balance.</p>
+            <div class="options-grid">
+              <label class="option-card"><input type="radio" name="bankBalance" value="under5k" /><span>Under $5,000</span></label>
+              <label class="option-card"><input type="radio" name="bankBalance" value="5k_15k" /><span>$5,000 – $15,000</span></label>
+              <label class="option-card"><input type="radio" name="bankBalance" value="15k_50k" /><span>$15,000 – $50,000</span></label>
+              <label class="option-card"><input type="radio" name="bankBalance" value="50k_150k" /><span>$50,000 – $150,000</span></label>
+              <label class="option-card"><input type="radio" name="bankBalance" value="over150k" /><span>Over $150,000</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevStep(6)">← Back</button>
+              <button type="button" class="btn-next" onclick="nextStep(6)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Step 7: Tax Liens -->
+          <div class="form-step" data-step="7">
+            <div class="step-icon">⚖️</div>
+            <h2>Do you have any outstanding tax liens or judgments?</h2>
+            <p class="step-hint">This includes federal, state, or local tax liens and any court judgments against the business or owner.</p>
+            <div class="options-grid options-grid--2col">
+              <label class="option-card"><input type="radio" name="taxLiens" value="no" /><span>No — I'm clear</span></label>
+              <label class="option-card"><input type="radio" name="taxLiens" value="yes" /><span>Yes — I have liens or judgments</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevStep(7)">← Back</button>
+              <button type="button" class="btn-next" onclick="nextStep(7)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Step 8: Loan Amount -->
+          <div class="form-step" data-step="8">
+            <div class="step-icon">🎯</div>
+            <h2>How much are you looking to borrow?</h2>
+            <p class="step-hint">Enter your target loan amount. Lenders compare this to your annual revenue.</p>
+            <div class="options-grid">
+              <label class="option-card"><input type="radio" name="loanAmount" value="under25k" /><span>Under $25,000</span></label>
+              <label class="option-card"><input type="radio" name="loanAmount" value="25k_100k" /><span>$25,000 – $100,000</span></label>
+              <label class="option-card"><input type="radio" name="loanAmount" value="100k_250k" /><span>$100,000 – $250,000</span></label>
+              <label class="option-card"><input type="radio" name="loanAmount" value="250k_500k" /><span>$250,000 – $500,000</span></label>
+              <label class="option-card"><input type="radio" name="loanAmount" value="over500k" /><span>Over $500,000</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevStep(8)">← Back</button>
+              <button type="button" class="btn-submit" id="submitBtn" onclick="submitForm()">Get My Score →</button>
+            </div>
+          </div>
+
+        </form>
+
+        <!-- ======================== -->
+        <!-- ADVANCED FORM (new)     -->
+        <!-- ======================== -->
+        <form id="advForm" style="display:none;" novalidate>
+
+          <!-- Adv Step 1: Income -->
+          <div class="adv-form-step active" data-adv-step="1">
+            <div class="step-icon">📈</div>
+            <h2>What is your business income?</h2>
+            <p class="step-hint">Provide EBITDA for the most accurate DSCR. If unavailable, provide Net Income YTD — we'll annualize it.</p>
+
+            <div class="adv-intro">
+              💡 <strong>DSCR (Debt Service Coverage Ratio)</strong> is the single most important metric commercial lenders use. It measures whether your income can cover your debt payments.
+            </div>
+
+            <div class="input-group">
+              <label class="input-group-label">EBITDA — Annual</label>
+              <div class="dollar-input">
+                <input type="number" id="adv_ebitda" placeholder="0" min="0" />
+              </div>
+              <p class="input-hint">Earnings Before Interest, Taxes, Depreciation &amp; Amortization. Most accurate for DSCR.</p>
+            </div>
+
+            <div class="or-divider">or</div>
+
+            <div class="input-group">
+              <label class="input-group-label">Net Income YTD</label>
+              <div class="dollar-input">
+                <input type="number" id="adv_netIncome" placeholder="0" min="0" />
+              </div>
+              <p class="input-hint">We'll annualize based on months elapsed. Enter at least one of the two fields above.</p>
+            </div>
+
+            <div class="step-nav">
+              <button type="button" class="btn-next" onclick="nextAdvStep(1)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Adv Step 2: Revenue & Debt -->
+          <div class="adv-form-step" data-adv-step="2">
+            <div class="step-icon">💳</div>
+            <h2>Revenue &amp; Debt Obligations</h2>
+            <p class="step-hint">These figures are used to calculate your DSCR and assess repayment capacity.</p>
+
+            <div class="input-row">
+              <div class="input-group">
+                <label class="input-group-label">Avg Monthly Revenue</label>
+                <div class="dollar-input">
+                  <input type="number" id="adv_monthlyRevenue" placeholder="0" min="0" />
+                </div>
+                <p class="input-hint">Average your last 3 months of gross revenue.</p>
+              </div>
+              <div class="input-group">
+                <label class="input-group-label">Monthly Debt Obligations</label>
+                <div class="dollar-input">
+                  <input type="number" id="adv_monthlyDebt" placeholder="0" min="0" />
+                </div>
+                <p class="input-hint">All loan, MCA &amp; line of credit payments. Enter 0 if none.</p>
+              </div>
+            </div>
+
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevAdvStep(2)">← Back</button>
+              <button type="button" class="btn-next" onclick="nextAdvStep(2)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Adv Step 3: Business Age -->
+          <div class="adv-form-step" data-adv-step="3">
+            <div class="step-icon">📅</div>
+            <h2>How long has your business been operating?</h2>
+            <p class="step-hint">Count from the date you first opened or incorporated.</p>
+            <div class="options-grid">
+              <label class="option-card"><input type="radio" name="adv_timeInBusiness" value="under6mo" /><span>Under 6 months</span></label>
+              <label class="option-card"><input type="radio" name="adv_timeInBusiness" value="6mo_12mo" /><span>6 – 12 months</span></label>
+              <label class="option-card"><input type="radio" name="adv_timeInBusiness" value="1yr_2yr" /><span>1 – 2 years</span></label>
+              <label class="option-card"><input type="radio" name="adv_timeInBusiness" value="2yr_5yr" /><span>2 – 5 years</span></label>
+              <label class="option-card"><input type="radio" name="adv_timeInBusiness" value="over5yr" /><span>5+ years</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevAdvStep(3)">← Back</button>
+              <button type="button" class="btn-next" onclick="nextAdvStep(3)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Adv Step 4: Industry -->
+          <div class="adv-form-step" data-adv-step="4">
+            <div class="step-icon">🏢</div>
+            <h2>What industry is your business in?</h2>
+            <p class="step-hint">Lenders rate industry risk differently — this directly impacts your approval odds and rate.</p>
+            <div class="options-grid options-grid--3col">
+              <label class="option-card"><input type="radio" name="adv_industry" value="professional" /><span>Professional Services</span></label>
+              <label class="option-card"><input type="radio" name="adv_industry" value="healthcare" /><span>Healthcare</span></label>
+              <label class="option-card"><input type="radio" name="adv_industry" value="construction" /><span>Construction / Trades</span></label>
+              <label class="option-card"><input type="radio" name="adv_industry" value="retail" /><span>Retail</span></label>
+              <label class="option-card"><input type="radio" name="adv_industry" value="restaurant" /><span>Restaurant / Food Service</span></label>
+              <label class="option-card"><input type="radio" name="adv_industry" value="ecommerce" /><span>E-Commerce</span></label>
+              <label class="option-card"><input type="radio" name="adv_industry" value="manufacturing" /><span>Manufacturing</span></label>
+              <label class="option-card"><input type="radio" name="adv_industry" value="realestate" /><span>Real Estate</span></label>
+              <label class="option-card"><input type="radio" name="adv_industry" value="other" /><span>Other</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevAdvStep(4)">← Back</button>
+              <button type="button" class="btn-next" onclick="nextAdvStep(4)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Adv Step 5: Credit Score -->
+          <div class="adv-form-step" data-adv-step="5">
+            <div class="step-icon">📊</div>
+            <h2>What is your personal credit score range?</h2>
+            <p class="step-hint">Most lenders check the owner's personal credit. Use Credit Karma if unsure.</p>
+            <div class="options-grid">
+              <label class="option-card"><input type="radio" name="adv_creditScore" value="under580" /><span>Under 580</span></label>
+              <label class="option-card"><input type="radio" name="adv_creditScore" value="580_619" /><span>580 – 619</span></label>
+              <label class="option-card"><input type="radio" name="adv_creditScore" value="620_659" /><span>620 – 659</span></label>
+              <label class="option-card"><input type="radio" name="adv_creditScore" value="660_699" /><span>660 – 699</span></label>
+              <label class="option-card"><input type="radio" name="adv_creditScore" value="700_739" /><span>700 – 739</span></label>
+              <label class="option-card"><input type="radio" name="adv_creditScore" value="740plus" /><span>740 or above</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevAdvStep(5)">← Back</button>
+              <button type="button" class="btn-next" onclick="nextAdvStep(5)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Adv Step 6: Loan Amount -->
+          <div class="adv-form-step" data-adv-step="6">
+            <div class="step-icon">🎯</div>
+            <h2>How much are you looking to borrow?</h2>
+            <p class="step-hint">Lenders compare this to your revenue and DSCR to assess repayment risk.</p>
+            <div class="options-grid">
+              <label class="option-card"><input type="radio" name="adv_loanAmount" value="under25k" /><span>Under $25,000</span></label>
+              <label class="option-card"><input type="radio" name="adv_loanAmount" value="25k_100k" /><span>$25,000 – $100,000</span></label>
+              <label class="option-card"><input type="radio" name="adv_loanAmount" value="100k_250k" /><span>$100,000 – $250,000</span></label>
+              <label class="option-card"><input type="radio" name="adv_loanAmount" value="250k_500k" /><span>$250,000 – $500,000</span></label>
+              <label class="option-card"><input type="radio" name="adv_loanAmount" value="over500k" /><span>Over $500,000</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevAdvStep(6)">← Back</button>
+              <button type="button" class="btn-submit" onclick="submitAdvForm()">Get My DSCR Score →</button>
+            </div>
+          </div>
+
+        </form>
+
+        <!-- Loading State -->
+        <div class="loading-state" id="loadingState" style="display:none;">
+          <div class="spinner"></div>
+          <p class="loading-text">Analyzing your profile<span class="dots"></span></p>
+          <p class="loading-sub">We're running your inputs through the same framework commercial lenders use.</p>
+        </div>
+
+        <!-- Results -->
+        <div class="results-state" id="resultsState" style="display:none;">
+
+          <!-- DSCR Card (Advanced mode only) -->
+          <div class="dscr-card" id="dscrCard" style="display:none;">
+            <div class="dscr-eyebrow">Debt Service Coverage Ratio</div>
+            <div class="dscr-ratio" id="dscrRatio">--</div>
+            <div class="dscr-meaning" id="dscrMeaning"></div>
+            <div class="dscr-bands">
+              <span class="dscr-band" id="dscrBand0">Under 1.0x — Negative</span>
+              <span class="dscr-band" id="dscrBand1">1.0–1.25x — Tight</span>
+              <span class="dscr-band" id="dscrBand2">1.25–1.5x — Good</span>
+              <span class="dscr-band" id="dscrBand3">Over 1.5x — Strong</span>
+            </div>
+          </div>
+
+          <div class="score-reveal">
+            <p class="score-label">Your Funding Grade Score</p>
+            <div class="score-ring">
+              <svg viewBox="0 0 120 120" class="score-svg">
+                <circle cx="60" cy="60" r="54" class="score-track" />
+                <circle cx="60" cy="60" r="54" class="score-fill" id="scoreCircle" />
+              </svg>
+              <div class="score-number" id="scoreNumber">--</div>
+            </div>
+            <div class="score-verdict" id="scoreVerdict"></div>
+          </div>
+
+          <div class="ai-breakdown" id="aiBreakdown">
+            <h3>Your Personal Breakdown</h3>
+            <div class="breakdown-content" id="breakdownContent"></div>
+          </div>
+
+          <div class="next-steps">
+            <h3>Recommended Next Steps</h3>
+            <div class="affiliate-links" id="affiliateLinks"></div>
+          </div>
+
+          <div class="disclaimer">
+            <p>Funding Grade is an educational tool. Scores are estimates based on common lender criteria and do not constitute a credit decision or guarantee of financing. Always consult a licensed financial professional before making borrowing decisions.</p>
+          </div>
+
+          <button class="btn-restart" onclick="restartForm()">← Start Over</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-section" id="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="steps-row">
+        <div class="how-step">
+          <div class="how-num">01</div>
+          <h3>Answer 8 Questions</h3>
+          <p>No personal information required. No login, no credit pull, no email. Just your business profile.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">02</div>
+          <h3>Get Your Score</h3>
+          <p>Our AI analyzes your inputs using the same criteria commercial lenders apply to every application.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">03</div>
+          <h3>Know What to Fix</h3>
+          <p>Plain-English explanation of exactly what's helping you, what's hurting you, and what to do next.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section" id="faq">
+    <div class="container faq-inner">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Does this affect my credit score?<span>+</span></button>
+          <div class="faq-a">No. Funding Grade never pulls your credit. We ask for your score range as a self-reported input only — no hard or soft inquiry is made.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What is DSCR and why does it matter?<span>+</span></button>
+          <div class="faq-a">DSCR stands for Debt Service Coverage Ratio — it measures whether your business income is sufficient to cover your existing debt payments. A DSCR above 1.25x means you generate $1.25 for every $1.00 of debt, which is the minimum most conventional lenders require. Our Advanced mode calculates your DSCR using your actual financial figures.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Who built this tool?<span>+</span></button>
+          <div class="faq-a">Funding Grade was built by professionals with direct experience in commercial lending and credit underwriting. The scoring framework reflects real-world lender criteria, not generic algorithms.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How accurate is the score?<span>+</span></button>
+          <div class="faq-a">The score is a strong directional indicator based on the most common lender criteria. It is not a guarantee of approval or denial — every lender has unique requirements. Think of it as a health check before you apply.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Do you sell my information?<span>+</span></button>
+          <div class="faq-a">Never. We don't collect identifying information, and we don't sell anything to third parties. The affiliate links in your results are clearly labeled and clicking them is entirely optional.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What if my score is low?<span>+</span></button>
+          <div class="faq-a">A low score is not a dead end — it's a roadmap. Your breakdown will explain specifically what factors are dragging your score down and how to address each one before you apply.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">Funding <span>Grade</span></div>
+      <p class="footer-tagline">Know before you apply.</p>
+      <p class="footer-legal">© 2025 Funding Grade. For educational purposes only. Not financial advice.</p>
+    </div>
+  </footer>
+
+  <div class="ad-slot ad-slot--bottom" id="adSlotBottom"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
