@@ -1,7 +1,6 @@
 // ============================================
 // FUNDING GRADE — Scoring Logic & Form Handler
 // ============================================
-
 let currentStep = 1;
 const totalSteps = 9;
 const totalAdvSteps = 7;
@@ -495,7 +494,7 @@ function getAffiliateLinks(score, data) {
   links.push({
     name: 'Nav',
     desc: 'Free business credit monitoring + matched financing options. A smart first step.',
-    url: 'https://www.nav.com/?ref=fundingrade',
+    url: 'https://nav.nkwcmr.net/c/7254877/1813107/2410',
     cta: 'Check Free →'
   });
 
