@@ -65,6 +65,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--white);
+   text-decoration: none;
 }
 
 .logo span { color: var(--gold); }
