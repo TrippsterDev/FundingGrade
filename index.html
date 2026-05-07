@@ -21,14 +21,13 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8868825563724751" crossorigin="anonymous"></script>
   <meta name="fo-verify" content="d66a5fcb-feef-4456-945a-0562772ef815" />
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-T5MNWR1EGT"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-T5MNWR1EGT');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T5MNWR1EGT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T5MNWR1EGT');
+  </script>
   <style>
     .mode-toggle-wrap{display:flex;justify-content:center;margin-bottom:28px}
     .mode-toggle{display:flex;background:#f0ede8;border-radius:10px;padding:4px;gap:2px}
@@ -64,6 +63,22 @@
     .sba-guidance{background:linear-gradient(135deg,#0f2137 0%,#1a3a5c 100%);border-radius:12px;padding:18px 20px;margin-bottom:20px}
     .sba-eyebrow{font-family:'IBM Plex Sans',sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:#C9A84C;margin-bottom:8px;font-weight:600}
     .sba-text{font-family:'IBM Plex Sans',sans-serif;font-size:.875rem;color:rgba(255,255,255,.8);line-height:1.6}
+    /* ---- SBA ELIGIBILITY CARDS ---- */
+    .sba-elig-cards{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+    .sba-elig-card{background:rgba(255,255,255,.04);border-radius:10px;padding:14px 16px;border-left:3px solid #666}
+    .sba-elig-card.eligible{border-color:#4ade80}
+    .sba-elig-card.possible{border-color:#fcd34d}
+    .sba-elig-card.unlikely{border-color:#f87171;opacity:.75}
+    .sba-elig-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;flex-wrap:wrap;gap:6px}
+    .sba-elig-name{font-family:'IBM Plex Sans',sans-serif;font-size:.875rem;font-weight:600;color:white}
+    .sba-elig-badge{font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+    .sba-elig-badge.eligible{background:rgba(74,222,128,.15);color:#4ade80}
+    .sba-elig-badge.possible{background:rgba(252,211,77,.15);color:#fcd34d}
+    .sba-elig-badge.unlikely{background:rgba(248,113,113,.15);color:#f87171}
+    .sba-elig-meta{font-family:'IBM Plex Sans',sans-serif;font-size:.72rem;color:rgba(255,255,255,.35);margin-bottom:6px}
+    .sba-elig-note{font-family:'IBM Plex Sans',sans-serif;font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.5}
+    .sba-nudge{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:12px 16px;margin-top:10px;font-family:'IBM Plex Sans',sans-serif;font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.6;text-align:center}
+    .sba-nudge strong{color:#C9A84C}
   </style>
 </head>
 <body>
@@ -158,7 +173,6 @@
             </div>
           </div>
 
-          <!-- STEP 4: Existing Debt — UPDATED BUCKETS -->
           <div class="form-step" data-step="4">
             <div class="step-icon">🏦</div>
             <h2>How much existing business debt do you carry?</h2>
@@ -199,7 +213,6 @@
             </div>
           </div>
 
-          <!-- STEP 6: Bank Balance — UPDATED BUCKETS -->
           <div class="form-step" data-step="6">
             <div class="step-icon">🏧</div>
             <h2>What is your average monthly business checking balance?</h2>
