@@ -449,6 +449,12 @@ function getVerdict(score) {
 function getAffiliateLinks(score, data) {
   const links = [];
   const p = data.loanPurpose;
+
+  // SBA eligibility helpers for SmartBiz targeting
+  const sbaTimeOK  = ['2yr_5yr','5yr_10yr','over10yr'].includes(data.timeInBusiness);
+  const sbaTimeMar = data.timeInBusiness === '1yr_2yr';
+  const sbaCreditOK = ['631_680','681_720','721_780','780plus'].includes(data.creditScore);
+
   if (score >= 60) {
     links.push({
       name:'Lendio',
@@ -460,6 +466,20 @@ function getAffiliateLinks(score, data) {
       url:'https://www.lendio.com/?ref=fundingrade', cta:'Check Rates →'
     });
   }
+
+  // SmartBiz — SBA preferred lender, shown for SBA-eligible profiles
+  if (score >= 55 && (sbaTimeOK || sbaTimeMar) && sbaCreditOK) {
+    links.push({
+      name:'SmartBiz',
+      desc: p==='real_estate' ? 'SBA 504 loans for commercial real estate — SmartBiz is a preferred SBA lender with fast pre-qualification.'
+          : p==='equipment'   ? 'SBA 7(a) equipment financing up to $5M — get pre-qualified in minutes with SmartBiz.'
+          : p==='refinance'   ? 'Refinance existing debt into a lower-rate SBA 7(a) loan — SmartBiz specializes in SBA financing.'
+          : p==='expansion'   ? 'SBA 7(a) loans for business acquisition and expansion — SmartBiz is a preferred SBA lender.'
+          : 'SBA 7(a) loans up to $5M — SmartBiz is a preferred SBA lender with a streamlined approval process.',
+      url:'https://smartbizbank.com/assist/partner/trippsterenterprisesllc/dewey', cta:'Check SBA Rates →'
+    });
+  }
+
   if (score >= 45) {
     links.push({ name:'Bluevine', desc:'Business lines of credit up to $250K. Fast decisions, no prepayment fees.', url:'https://www.bluevine.com/?ref=fundingrade', cta:'See If You Qualify →' });
   }
@@ -675,10 +695,19 @@ function renderSBASection(sbaEl, sbaEligibility, mode, data) {
 
   if (mode === 'advanced') {
     // Full eligibility breakdown
+    const smartbizUrl = 'https://smartbizbank.com/assist/partner/trippsterenterprisesllc/dewey';
     const cards = sbaEligibility.map(prog => {
       const issueHTML = prog.issues.length
         ? `<div class="sba-elig-note">${prog.issues.join(' · ')}</div>`
         : `<div class="sba-elig-note" style="color:rgba(74,222,128,.7)">Your profile meets the key requirements for this program.</div>`;
+
+      // Show SmartBiz CTA on 7(a) and 504 eligible/possible cards — not Microloan, not unlikely
+      const showCTA = (prog.status === 'eligible' || prog.status === 'possible')
+                   && (prog.name === 'SBA 7(a)' || prog.name === 'SBA 504');
+      const ctaHTML = showCTA
+        ? `<a href="${smartbizUrl}" target="_blank" rel="noopener sponsored" class="sba-elig-cta">Apply via SmartBiz →</a>`
+        : '';
+
       return `
         <div class="sba-elig-card ${prog.status}">
           <div class="sba-elig-header">
@@ -687,6 +716,7 @@ function renderSBASection(sbaEl, sbaEligibility, mode, data) {
           </div>
           <div class="sba-elig-meta">${prog.maxAmount} &nbsp;·&nbsp; ${prog.bestFor}</div>
           ${issueHTML}
+          ${ctaHTML}
         </div>`;
     }).join('');
 
