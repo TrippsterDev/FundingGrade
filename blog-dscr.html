@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSCR vs. FCCR — What Lenders Actually Calculate | Funding Grade</title>
+  <meta name="description" content="Most guides only cover DSCR. But sophisticated lenders use a stricter metric called FCCR. Learn the difference and why it matters for your business loan application." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.fundinggrade.com/blog-dscr.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8868825563724751" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T5MNWR1EGT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T5MNWR1EGT');
+  </script>
+  <style>
+    .article-hero { padding: 60px 0 40px; }
+    .article-back { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: var(--gold); text-decoration: none; display: inline-block; margin-bottom: 24px; letter-spacing: 0.04em; }
+    .article-back:hover { color: var(--gold-light); }
+    .article-tag { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .article-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 20px; max-width: 760px; }
+    .article-hero h1 em { font-style: italic; color: var(--gold); }
+    .article-meta { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-bottom: 40px; }
+    .article-body { max-width: 720px; padding-bottom: 80px; }
+    .article-body p { font-family: 'IBM Plex Sans', sans-serif; font-size: 1rem; color: var(--white-dim); line-height: 1.85; margin-bottom: 24px; }
+    .article-body h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 600; color: var(--white); margin: 48px 0 16px; line-height: 1.3; }
+    .article-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; color: var(--gold-light); margin: 32px 0 12px; }
+    .formula-box { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.2); border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; padding: 20px 24px; margin: 28px 0; font-family: 'IBM Plex Sans', sans-serif; }
+    .formula-box .formula-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .formula-box .formula { font-size: 1.1rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+    .formula-box .formula-desc { font-size: 0.85rem; color: var(--white-dim); line-height: 1.6; }
+    .comparison-table { width: 100%; border-collapse: collapse; margin: 28px 0; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.875rem; }
+    .comparison-table th { background: rgba(201,168,76,0.12); color: var(--gold-light); font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(201,168,76,0.2); }
+    .comparison-table td { padding: 12px 16px; color: var(--white-dim); border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; line-height: 1.6; }
+    .comparison-table tr:last-child td { border-bottom: none; }
+    .callout { background: linear-gradient(135deg, #0f2137 0%, #1a3a5c 100%); border-radius: 12px; padding: 24px 28px; margin: 32px 0; }
+    .callout-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .callout p { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 0; }
+    .article-cta { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.2); border-radius: 16px; padding: 36px; text-align: center; margin: 48px 0; }
+    .article-cta h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--white); margin-bottom: 12px; }
+    .article-cta p { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; color: var(--white-dim); margin-bottom: 24px; }
+    .article-nav { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .article-nav a { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: var(--gold); text-decoration: none; }
+    .article-nav a:hover { color: var(--gold-light); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo">Funding <span>Grade</span></a>
+      <nav class="header-nav">
+        <a href="/#how-it-works">How It Works</a>
+        <a href="/blog">Blog</a>
+        <a href="/#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="article-hero">
+    <div class="container">
+      <a href="/blog" class="article-back">← Back to Blog</a>
+      <div class="article-tag">Lending Fundamentals</div>
+      <h1>DSCR vs. FCCR —<br /><em>What Lenders Actually Calculate</em></h1>
+      <div class="article-meta">8 min read · Underwriting &amp; Ratios · Written by Lending Professionals</div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="article-body">
+
+      <p>Every guide on business lending mentions DSCR. It's the metric that gets the most airtime, the most explainers, the most calculator tools. But here's what most of those guides leave out: DSCR is not the only ratio lenders run. And for larger, more sophisticated loan requests, a stricter calculation called FCCR often takes center stage.</p>
+
+      <p>Understanding both — and knowing which one your lender is likely to use — can be the difference between walking into a loan application prepared and walking out with a denial letter you didn't see coming.</p>
+
+      <h2>What is DSCR?</h2>
+
+      <p>DSCR stands for Debt Service Coverage Ratio. At its core, it answers one question: does your business generate enough income to cover your existing debt payments?</p>
+
+      <div class="formula-box">
+        <div class="formula-label">DSCR Formula</div>
+        <div class="formula">DSCR = Net Operating Income ÷ Total Annual Debt Service</div>
+        <div class="formula-desc">Net Operating Income is typically your EBITDA (Earnings Before Interest, Taxes, Depreciation, and Amortization). Total Annual Debt Service is the sum of all principal and interest payments over the year.</div>
+      </div>
+
+      <p>A DSCR of 1.0 means your income exactly covers your debt payments — every dollar earned goes straight to debt. A DSCR of 1.25 means you generate $1.25 for every $1.00 of debt service, leaving a 25% cushion. Most SBA lenders and online lenders require a minimum of 1.25x. Conventional bank lenders often want 1.35x or higher.</p>
+
+      <p>A DSCR below 1.0 is a negative coverage ratio — your business isn't generating enough income to cover what you already owe. This is almost always an automatic disqualifier for new financing.</p>
+
+      <h3>A Simple Example</h3>
+      <p>Suppose your business generates $300,000 in EBITDA annually, and your total debt payments (principal + interest on all loans) are $200,000 per year.</p>
+      <p>DSCR = $300,000 ÷ $200,000 = <strong style="color: var(--white);">1.50x</strong> — a strong result that most lenders would consider excellent.</p>
+
+      <h2>What is FCCR?</h2>
+
+      <p>FCCR stands for Fixed Charge Coverage Ratio. It's a more comprehensive version of DSCR that captures obligations DSCR misses entirely — most importantly, operating leases.</p>
+
+      <div class="formula-box">
+        <div class="formula-label">FCCR Formula</div>
+        <div class="formula">FCCR = (EBIT + Fixed Charges Before Tax) ÷ (Fixed Charges Before Tax + Interest)</div>
+        <div class="formula-desc">Fixed charges include lease payments, insurance obligations, and other fixed contractual commitments. EBIT is Earnings Before Interest and Taxes — note this is different from EBITDA.</div>
+      </div>
+
+      <p>The critical difference is what counts as a "charge." DSCR only looks at debt payments — loans, lines of credit, equipment financing. FCCR adds fixed operating obligations like commercial lease payments. For a business with a significant office or retail lease, this can dramatically change the picture.</p>
+
+      <h3>Why This Matters</h3>
+      <p>Imagine a restaurant with strong revenue and a solid DSCR of 1.35x. Looks good on paper. But that restaurant also has a $15,000/month commercial kitchen lease — a fixed obligation that doesn't show up in DSCR at all. When a bank runs FCCR and includes the lease payments, the ratio might drop to 0.95x — a negative coverage situation that would trigger a denial.</p>
+
+      <p>The business owner was caught completely off guard because every tool they used only calculated DSCR.</p>
+
+      <h2>Which Ratio Does Your Lender Use?</h2>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Lender Type</th>
+            <th>Typical Ratio Used</th>
+            <th>Minimum Threshold</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SBA Lenders (7a, 504)</td>
+            <td>DSCR</td>
+            <td>1.25x</td>
+          </tr>
+          <tr>
+            <td>Online / Alternative Lenders</td>
+            <td>DSCR (simplified)</td>
+            <td>1.0x–1.15x</td>
+          </tr>
+          <tr>
+            <td>Community Banks</td>
+            <td>DSCR or FCCR</td>
+            <td>1.25x–1.35x</td>
+          </tr>
+          <tr>
+            <td>Regional &amp; National Banks</td>
+            <td>FCCR (preferred)</td>
+            <td>1.20x–1.35x</td>
+          </tr>
+          <tr>
+            <td>Commercial Real Estate Lenders</td>
+            <td>DSCR (property-level)</td>
+            <td>1.25x–1.30x</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>As a general rule: the larger and more sophisticated the lender, the more likely they are to use FCCR. SBA loans and online lenders almost universally use DSCR. Regional banks will often run both and use the more conservative result.</p>
+
+      <h2>How to Calculate Your Own FCCR</h2>
+
+      <p>You don't need to wait for a lender to run this number. Here's how to calculate it yourself before you apply:</p>
+
+      <p><strong style="color: var(--white);">Step 1:</strong> Pull your most recent full-year income statement and find your EBIT (operating income before interest and taxes).</p>
+      <p><strong style="color: var(--white);">Step 2:</strong> Add up all fixed charges — lease payments, equipment rental obligations, any fixed insurance premiums baked into contracts.</p>
+      <p><strong style="color: var(--white);">Step 3:</strong> Apply the formula: (EBIT + Fixed Charges) ÷ (Fixed Charges + Interest Expense)</p>
+      <p><strong style="color: var(--white);">Step 4:</strong> If your result is below 1.20, expect pushback from bank lenders even if your DSCR looks acceptable.</p>
+
+      <div class="callout">
+        <div class="callout-label">Pro Tip from the Underwriting Desk</div>
+        <p>When preparing your loan package, calculate both ratios and include them in your executive summary. Lenders appreciate borrowers who understand their own numbers. Walking in with a self-calculated FCCR of 1.42x tells the underwriter you've done your homework — and that you're not going to be surprised by anything in the underwriting process.</p>
+      </div>
+
+      <h2>What to Do If Your Ratios Are Low</h2>
+
+      <p>If your DSCR or FCCR comes back below the preferred threshold, you have several levers to pull before you apply:</p>
+
+      <p><strong style="color: var(--white);">Reduce existing debt service:</strong> Paying down revolving balances or eliminating a high-payment loan before applying can meaningfully improve both ratios. Even reducing monthly debt payments by $2,000 adds $24,000 back to your annual coverage calculation.</p>
+
+      <p><strong style="color: var(--white);">Negotiate lease terms:</strong> If a commercial lease is driving your FCCR down, consider whether you can renegotiate to a variable or shorter-term arrangement that reduces the fixed charge burden.</p>
+
+      <p><strong style="color: var(--white);">Add back non-cash charges:</strong> Work with your accountant to ensure depreciation and amortization are being properly added back to your EBITDA calculation. These are real expenses on paper that don't represent cash leaving the business.</p>
+
+      <p><strong style="color: var(--white);">Document one-time expenses:</strong> If your income was depressed by a one-time event — equipment failure, a lawsuit, a key employee departure — document it clearly. Many lenders will allow an adjusted DSCR that excludes verified non-recurring expenses.</p>
+
+      <p><strong style="color: var(--white);">Choose the right lender:</strong> If your FCCR is tight but your DSCR is solid, an SBA lender or online lender is likely a better fit than a regional bank. Matching your profile to the right lender type is half the battle.</p>
+
+      <div class="article-cta">
+        <h3>Calculate Your DSCR Free</h3>
+        <p>Funding Grade's Advanced DSCR mode calculates your ratio using your actual financial figures — the same way commercial lenders do. Get your score in under 60 seconds.</p>
+        <a href="/#estimator" class="btn-primary">Check My Score →</a>
+      </div>
+
+      <div class="article-nav">
+        <a href="/blog-sba-guide.html">Next: SBA 7(a) vs. SBA 504 →</a>
+        <a href="/blog">← All Articles</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">Funding <span>Grade</span></div>
+      <p class="footer-tagline">Know before you apply.</p>
+      <p class="footer-legal">© 2025 Funding Grade. For educational purposes only. Not financial advice.</p>
+    </div>
+  </footer>
+</body>
+</html>
