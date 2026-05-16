@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Depreciation Explained — Section 179, Bonus Depreciation, and What Happens When You Sell | Funding Grade</title>
+  <meta name="description" content="Depreciation reduces your taxable income — but lenders add it back when evaluating your loan. Here's how MACRS, Section 179, and bonus depreciation work, and what depreciation recapture means when you sell an asset." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.fundinggrade.com/blog-depreciation.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8868825563724751" crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T5MNWR1EGT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T5MNWR1EGT');
+  </script>
+  <style>
+    .article-hero { padding: 60px 0 40px; }
+    .article-back { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: var(--gold); text-decoration: none; display: inline-block; margin-bottom: 24px; letter-spacing: 0.04em; }
+    .article-back:hover { color: var(--gold-light); }
+    .article-tag { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .article-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 20px; max-width: 760px; }
+    .article-hero h1 em { font-style: italic; color: var(--gold); }
+    .article-meta { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-bottom: 40px; }
+    .article-body { max-width: 720px; padding-bottom: 80px; }
+    .article-body p { font-family: 'IBM Plex Sans', sans-serif; font-size: 1rem; color: var(--white-dim); line-height: 1.85; margin-bottom: 24px; }
+    .article-body h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 600; color: var(--white); margin: 48px 0 16px; line-height: 1.3; }
+    .article-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; color: var(--gold-light); margin: 32px 0 12px; }
+    .formula-box { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.2); border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; padding: 20px 24px; margin: 28px 0; }
+    .formula-box .formula-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; font-family: 'IBM Plex Sans', sans-serif; }
+    .formula-box .formula { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 8px; font-family: 'IBM Plex Sans', sans-serif; line-height: 1.5; }
+    .formula-box .formula-desc { font-size: 0.85rem; color: var(--white-dim); line-height: 1.6; font-family: 'IBM Plex Sans', sans-serif; }
+    .example-block { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.12); border-radius: 14px; padding: 28px; margin: 32px 0; }
+    .example-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .example-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.875rem; }
+    .example-row:last-child { border-bottom: none; font-weight: 600; color: var(--white); }
+    .example-label-text { color: var(--white-dim); }
+    .example-value { color: var(--white); font-weight: 500; }
+    .example-value.positive { color: #4ade80; }
+    .example-value.negative { color: #f87171; }
+    .example-value.gold { color: var(--gold); }
+    .method-card { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.12); border-radius: 14px; padding: 24px 28px; margin: 20px 0; position: relative; overflow: hidden; }
+    .method-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold-dim), var(--gold)); }
+    .method-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+    .method-badge { display: inline-block; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(201,168,76,0.1); color: var(--gold); border: 1px solid rgba(201,168,76,0.25); border-radius: 20px; padding: 3px 10px; margin-bottom: 12px; }
+    .method-desc { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.875rem; color: var(--white-dim); line-height: 1.7; }
+    .comparison-table { width: 100%; border-collapse: collapse; margin: 28px 0; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.875rem; }
+    .comparison-table th { background: rgba(201,168,76,0.12); color: var(--gold-light); font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(201,168,76,0.2); }
+    .comparison-table td { padding: 12px 16px; color: var(--white-dim); border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; line-height: 1.6; }
+    .comparison-table tr:last-child td { border-bottom: none; }
+    .callout { background: linear-gradient(135deg, #0f2137 0%, #1a3a5c 100%); border-radius: 12px; padding: 24px 28px; margin: 32px 0; }
+    .callout-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .callout p { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 0; }
+    .warning-box { border: 1px solid rgba(248,113,113,0.3); border-left: 3px solid #f87171; border-radius: 0 10px 10px 0; padding: 20px 24px; margin: 28px 0; background: rgba(248,113,113,0.05); }
+    .warning-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #f87171; margin-bottom: 8px; }
+    .warning-text { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; color: var(--white-dim); line-height: 1.7; }
+    .article-cta { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.2); border-radius: 16px; padding: 36px; text-align: center; margin: 48px 0; }
+    .article-cta h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--white); margin-bottom: 12px; }
+    .article-cta p { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; color: var(--white-dim); margin-bottom: 24px; }
+    .article-nav { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.08); justify-content: space-between; }
+    .article-nav a { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: var(--gold); text-decoration: none; }
+    .article-nav a:hover { color: var(--gold-light); }
+    .disclaimer { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.78rem; color: rgba(255,255,255,0.3); line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo">Funding <span>Grade</span></a>
+      <nav class="header-nav">
+        <a href="/#how-it-works">How It Works</a>
+        <a href="/blog">Blog</a>
+        <a href="/#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="article-hero">
+    <div class="container">
+      <a href="/blog" class="article-back">← Back to Blog</a>
+      <div class="article-tag">Tax &amp; Lending</div>
+      <h1>Depreciation Explained —<br /><em>Section 179, Bonus Depreciation, and What Happens When You Sell</em></h1>
+      <div class="article-meta">9 min read · Tax &amp; Lending · Written by Lending Professionals · Sourced from IRS Publication 946</div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="article-body">
+
+      <p>Every year your business uses a piece of equipment, a vehicle, or commercial property, that asset loses value. The IRS allows you to deduct that lost value over time — a mechanism called depreciation. For business owners, depreciation is one of the most powerful tax tools available. It reduces taxable income without reducing cash flow.</p>
+
+      <p>But there's a side of depreciation that most guides skip: what happens when you sell a depreciated asset, and how lenders view depreciation when evaluating your loan application. Understanding all three dimensions — the tax benefit, the recapture trap, and the lending implication — is what separates informed business owners from everyone else.</p>
+
+      <h2>The Basics — What Depreciation Actually Does</h2>
+
+      <p>When you buy a piece of equipment for $100,000, you don't deduct the full $100,000 in the year you buy it under normal depreciation rules. Instead, you deduct a portion of that cost each year over the asset's "useful life" — a period set by the IRS based on the type of property. By the end of that period, you've deducted the full cost of the asset through annual depreciation deductions.</p>
+
+      <div class="formula-box">
+        <div class="formula-label">What Depreciation Does</div>
+        <div class="formula">Depreciation = Non-cash deduction that reduces taxable income without reducing actual cash flow</div>
+        <div class="formula-desc">A business that spends $100,000 on equipment has $100,000 less cash. But the tax deduction is spread over multiple years. In year one, the business might deduct $20,000 — reducing taxable income by $20,000 while having already spent the full $100,000. This timing difference is why businesses with heavy capital expenditures can show tax losses while remaining genuinely cash-flow positive.</div>
+      </div>
+
+      <p>The current system for depreciating most business property is called MACRS — the Modified Accelerated Cost Recovery System. Under MACRS, assets are assigned to recovery period classes, and depreciation deductions are accelerated toward the earlier years of the asset's life. The IRS assigns recovery periods based on asset type: 5-year property for computers and light vehicles, 7-year property for most equipment and office furniture, 15-year property for land improvements, and 39 years for nonresidential commercial real estate.</p>
+
+      <h2>Three Ways to Depreciate — and When to Use Each</h2>
+
+      <div class="method-card">
+        <div class="method-name">Regular MACRS Depreciation</div>
+        <div class="method-badge">Spreads deduction over asset's useful life</div>
+        <div class="method-desc">The standard approach. You deduct a portion of the asset's cost each year using IRS-prescribed rates based on the asset's recovery period. Deductions are front-loaded — you take more in early years and less in later years. Best for businesses that want consistent, predictable deductions over time rather than a large immediate deduction.</div>
+      </div>
+
+      <div class="method-card">
+        <div class="method-name">Section 179 Expensing</div>
+        <div class="method-badge">Immediate full deduction in year of purchase</div>
+        <div class="method-desc">Section 179 allows you to deduct the full cost of qualifying property in the year you place it in service — rather than depreciating it over multiple years. For tax years beginning in 2025, the maximum Section 179 deduction is $2,500,000, phasing out dollar-for-dollar once total property placed in service exceeds $4,000,000. Section 179 is limited to your business's taxable income — you cannot use it to create a loss. Qualifying property includes tangible personal property, off-the-shelf software, and certain qualified real property improvements.</div>
+      </div>
+
+      <div class="method-card">
+        <div class="method-name">Bonus Depreciation (Special Depreciation Allowance)</div>
+        <div class="method-badge">Large first-year deduction — can create a loss</div>
+        <div class="method-desc">Bonus depreciation — formally called the Special Depreciation Allowance — allows an additional first-year deduction on top of regular MACRS. Under the One Big Beautiful Bill Act signed in 2025, bonus depreciation was reinstated at 100% for qualified property acquired and placed in service after January 19, 2025. Unlike Section 179, bonus depreciation is NOT limited to your taxable income — it can create or increase a net operating loss. This makes it a powerful planning tool, but one that requires coordination with your tax professional.</div>
+      </div>
+
+      <h2>A Worked Example — The Same $80,000 Equipment Purchase Three Ways</h2>
+
+      <p>Suppose your business buys a piece of manufacturing equipment for $80,000 in 2025. It's 7-year MACRS property. Here's how the deduction looks under each approach in year one:</p>
+
+      <div class="example-block">
+        <div class="example-label">Year 1 Deduction Comparison — $80,000 Equipment Purchase</div>
+        <div class="example-row">
+          <span class="example-label-text">Regular MACRS (7-year, 200% DB, half-year convention)</span>
+          <span class="example-value gold">~$11,430</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Section 179 (full expensing, if under income limit)</span>
+          <span class="example-value gold">$80,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">100% Bonus Depreciation (property placed in service after Jan 19, 2025)</span>
+          <span class="example-value gold">$80,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Can it create a tax loss?</span>
+          <span class="example-value">MACRS: No immediate loss from deduction alone | Section 179: No | Bonus: Yes</span>
+        </div>
+      </div>
+
+      <p>The numbers look identical for Section 179 and bonus depreciation in year one — but the key difference is that bonus depreciation can push your taxable income below zero, creating an NOL carryforward. Section 179 cannot. This distinction matters enormously for tax planning.</p>
+
+      <h2>MACRS Recovery Periods — How Long Does Your Asset Depreciate?</h2>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Asset Type</th>
+            <th>MACRS Recovery Period</th>
+            <th>Common Examples</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>5-year property</td>
+            <td>5 years</td>
+            <td>Computers, light trucks, cars, copiers</td>
+          </tr>
+          <tr>
+            <td>7-year property</td>
+            <td>7 years</td>
+            <td>Most equipment, office furniture, fixtures</td>
+          </tr>
+          <tr>
+            <td>15-year property</td>
+            <td>15 years</td>
+            <td>Land improvements, fencing, paving, landscaping</td>
+          </tr>
+          <tr>
+            <td>Qualified Improvement Property</td>
+            <td>15 years</td>
+            <td>Interior improvements to nonresidential buildings</td>
+          </tr>
+          <tr>
+            <td>Residential rental property</td>
+            <td>27.5 years</td>
+            <td>Apartment buildings, rental homes</td>
+          </tr>
+          <tr>
+            <td>Nonresidential real property</td>
+            <td>39 years</td>
+            <td>Office buildings, warehouses, retail space</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>What Happens When You Sell a Depreciated Asset — Depreciation Recapture</h2>
+
+      <p>This is the section most guides skip — and it's the one that surprises business owners most at tax time.</p>
+
+      <p>When you sell a depreciable business asset, the IRS doesn't just look at what you paid and what you received. It looks at how much depreciation you've already deducted. That accumulated depreciation is "recaptured" — taxed as ordinary income in the year of sale, not as a capital gain.</p>
+
+      <div class="formula-box">
+        <div class="formula-label">Depreciation Recapture — The Basic Concept</div>
+        <div class="formula">Adjusted Basis = Original Cost − Accumulated Depreciation Taken</div>
+        <div class="formula-desc">When you sell, the IRS compares the sale price to your adjusted basis. Any gain up to the amount of depreciation previously taken is taxed as ordinary income (recaptured). Any gain above the original cost is a capital gain. This is governed by IRC Section 1245 for personal property and Section 1250 for real property.</div>
+      </div>
+
+      <h3>A Real Example</h3>
+      <p>You buy a piece of equipment for $100,000. Over five years you take $60,000 in total depreciation deductions. Your adjusted basis is now $40,000. You sell the equipment for $75,000.</p>
+
+      <div class="example-block">
+        <div class="example-label">Depreciation Recapture Example</div>
+        <div class="example-row">
+          <span class="example-label-text">Original purchase price</span>
+          <span class="example-value">$100,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Total depreciation taken over 5 years</span>
+          <span class="example-value negative">($60,000)</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Adjusted basis at time of sale</span>
+          <span class="example-value">$40,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Sale price</span>
+          <span class="example-value positive">$75,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Total gain on sale</span>
+          <span class="example-value">$35,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Depreciation recapture (taxed as ordinary income)</span>
+          <span class="example-value negative">$35,000 (all gain is recaptured — sale price didn't exceed original cost)</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Capital gain</span>
+          <span class="example-value">$0</span>
+        </div>
+      </div>
+
+      <p>In this example, none of the gain qualifies for favorable capital gains treatment — it's all recaptured as ordinary income because the sale price didn't exceed the original cost. If the equipment had sold for $120,000, the first $60,000 of gain would be recaptured as ordinary income and the remaining $20,000 would be a capital gain.</p>
+
+      <div class="warning-box">
+        <div class="warning-label">The Section 179 and Bonus Depreciation Recapture Trap</div>
+        <div class="warning-text">If you used Section 179 or bonus depreciation to deduct the full cost of an asset immediately and then sell or convert it to personal use before the end of its normal MACRS recovery period, the IRS may recapture all of the accelerated deduction as ordinary income. This is particularly relevant for vehicles and equipment that business owners sometimes sell or trade in earlier than expected. The faster you took the deduction, the larger the potential recapture when you sell.</div>
+      </div>
+
+      <h2>The Lending Dimension — How Lenders Handle Depreciation</h2>
+
+      <p>Here's where tax knowledge and loan readiness intersect — and where understanding depreciation gives you a real advantage in the underwriting process.</p>
+
+      <h3>Why Lenders Add Depreciation Back</h3>
+      <p>Depreciation is a non-cash deduction. It reduces your taxable income and your reported net income on your tax return, but it doesn't represent actual money leaving the business. A business that reports $50,000 in net income after taking $80,000 in depreciation deductions actually generated $130,000 in operating cash flow from the lender's perspective.</p>
+
+      <p>This is why commercial lenders calculate EBITDA — Earnings Before Interest, Taxes, Depreciation, and Amortization — rather than relying on net income alone. By adding depreciation back to net income, the lender gets a cleaner picture of actual cash generation available for debt service.</p>
+
+      <div class="example-block">
+        <div class="example-label">How Lenders Add Back Depreciation — DSCR Impact</div>
+        <div class="example-row">
+          <span class="example-label-text">Net income (as reported on tax return)</span>
+          <span class="example-value negative">$20,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Add back: Depreciation</span>
+          <span class="example-value positive">+ $95,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Add back: Amortization</span>
+          <span class="example-value positive">+ $12,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Add back: Interest expense</span>
+          <span class="example-value positive">+ $18,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">EBITDA (what lenders actually use)</span>
+          <span class="example-value gold">$145,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Annual debt service (existing + proposed)</span>
+          <span class="example-value">$95,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">DSCR</span>
+          <span class="example-value positive">1.53x ✅</span>
+        </div>
+      </div>
+
+      <p>A business showing $20,000 in net income looks marginal or even weak at first glance. But with $95,000 in depreciation added back, the DSCR of 1.53x tells a completely different story. This is why businesses with significant capital equipment — manufacturing, transportation, construction — often look much better to a sophisticated lender than their tax return net income suggests.</p>
+
+      <h3>What This Means When You Apply for a Loan</h3>
+      <p>If your business has significant depreciation deductions — from equipment, vehicles, leasehold improvements, or real estate — make sure your lender is adding them back properly. Not every lender, and not every loan officer, runs a full EBITDA analysis. Some look only at net income. If your net income is low because of large depreciation charges but your actual cash flow is strong, ask your lender to review the EBITDA calculation explicitly.</p>
+
+      <p>Bring your depreciation schedules — the detail behind Form 4562 on your tax return — to the loan meeting. A clear depreciation schedule shows the lender exactly what's being added back and why. It turns what looks like a weak income number into a transparent, well-documented cash flow story.</p>
+
+      <div class="callout">
+        <div class="callout-label">The Asset Sale Complication in Loan Analysis</div>
+        <p>If your business sold a major asset during one of the years in the lender's review window, that sale produced a gain — possibly a large one — that appears on your tax return as income. But lenders typically normalize asset sale gains out of DSCR analysis because they're non-recurring. A business that sold a $500,000 piece of equipment and shows $400,000 in taxable income from the sale is not generating $400,000 in sustainable annual income. Expect your lender to ask about large asset sales, and be prepared to document why the gain was one-time. The depreciation recapture rules mean that gain may be taxed as ordinary income — but either way, a good underwriter will normalize it out of the cash flow picture.</p>
+      </div>
+
+      <h2>Pulling It Together — What Every Business Owner Should Know</h2>
+
+      <p>Depreciation is a legitimate, powerful tax tool. Used well — especially with Section 179 and bonus depreciation — it can dramatically reduce your tax bill in years when you're investing in the business. But it comes with two important complications that require advance planning.</p>
+
+      <p>First, the recapture risk: if you take large accelerated deductions and then sell the asset before its recovery period ends, the IRS will recapture those deductions as ordinary income. This can produce a surprise tax bill at sale. Plan your asset dispositions with your accountant before the sale happens — not after.</p>
+
+      <p>Second, the lending implication: large depreciation deductions that push your net income close to zero or into negative territory can make your tax return look weak to an unsophisticated lender. Know your EBITDA number before you walk into any loan application. If a lender is evaluating you on net income alone, push back and ask them to run the full addback analysis.</p>
+
+      <div class="article-cta">
+        <h3>See How Your EBITDA Scores With Lenders</h3>
+        <p>Funding Grade's Advanced DSCR mode calculates your debt service coverage using EBITDA — the same addback methodology commercial lenders use. Get your score free in under 60 seconds.</p>
+        <a href="/#estimator" class="btn-primary">Calculate My DSCR Free →</a>
+      </div>
+
+      <p class="disclaimer">This article is for educational purposes only and does not constitute tax or legal advice. Depreciation rules are complex and fact-specific — including recent changes under the One Big Beautiful Bill Act signed in 2025. Consult a qualified tax professional before making depreciation elections. IRS Publication 946, How to Depreciate Property, is the authoritative source for depreciation rules. All dollar limits and percentages referenced reflect 2025 tax year figures per IRS.gov.</p>
+
+      <div class="article-nav">
+        <a href="/blog-nol.html">← Net Operating Loss Explained</a>
+        <a href="/blog">All Articles →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">Funding <span>Grade</span></div>
+      <p class="footer-tagline">Know before you apply.</p>
+      <p class="footer-legal">© 2025 Funding Grade. For educational purposes only. Not financial advice.</p>
+    </div>
+  </footer>
+</body>
+</html>
