@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Cash Flow vs. DSCR — Why Your Lender Looks at Both | Funding Grade</title>
+  <meta name="description" content="Most borrowers know about DSCR. Few know lenders also run a global cash flow analysis that combines business AND personal finances. Here's what it is and how to prepare." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.fundinggrade.com/blog-global-cash-flow.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8868825563724751" crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T5MNWR1EGT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T5MNWR1EGT');
+  </script>
+  <style>
+    .article-hero { padding: 60px 0 40px; }
+    .article-back { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: var(--gold); text-decoration: none; display: inline-block; margin-bottom: 24px; letter-spacing: 0.04em; }
+    .article-back:hover { color: var(--gold-light); }
+    .article-tag { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .article-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 20px; max-width: 760px; }
+    .article-hero h1 em { font-style: italic; color: var(--gold); }
+    .article-meta { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-bottom: 40px; }
+    .article-body { max-width: 720px; padding-bottom: 80px; }
+    .article-body p { font-family: 'IBM Plex Sans', sans-serif; font-size: 1rem; color: var(--white-dim); line-height: 1.85; margin-bottom: 24px; }
+    .article-body h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 600; color: var(--white); margin: 48px 0 16px; line-height: 1.3; }
+    .article-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; color: var(--gold-light); margin: 32px 0 12px; }
+    .formula-box { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.2); border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; padding: 20px 24px; margin: 28px 0; }
+    .formula-box .formula-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; font-family: 'IBM Plex Sans', sans-serif; }
+    .formula-box .formula { font-size: 1.1rem; font-weight: 600; color: var(--white); margin-bottom: 8px; font-family: 'IBM Plex Sans', sans-serif; }
+    .formula-box .formula-desc { font-size: 0.85rem; color: var(--white-dim); line-height: 1.6; font-family: 'IBM Plex Sans', sans-serif; }
+    .comparison-table { width: 100%; border-collapse: collapse; margin: 28px 0; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.875rem; }
+    .comparison-table th { background: rgba(201,168,76,0.12); color: var(--gold-light); font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(201,168,76,0.2); }
+    .comparison-table td { padding: 12px 16px; color: var(--white-dim); border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; line-height: 1.6; }
+    .comparison-table tr:last-child td { border-bottom: none; }
+    .callout { background: linear-gradient(135deg, #0f2137 0%, #1a3a5c 100%); border-radius: 12px; padding: 24px 28px; margin: 32px 0; }
+    .callout-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .callout p { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 0; }
+    .example-block { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.12); border-radius: 14px; padding: 28px; margin: 32px 0; }
+    .example-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .example-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.875rem; }
+    .example-row:last-child { border-bottom: none; font-weight: 600; color: var(--white); }
+    .example-label-text { color: var(--white-dim); }
+    .example-value { color: var(--white); font-weight: 500; }
+    .example-value.positive { color: #4ade80; }
+    .example-value.negative { color: #f87171; }
+    .article-cta { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.2); border-radius: 16px; padding: 36px; text-align: center; margin: 48px 0; }
+    .article-cta h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--white); margin-bottom: 12px; }
+    .article-cta p { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; color: var(--white-dim); margin-bottom: 24px; }
+    .article-nav { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.08); justify-content: space-between; }
+    .article-nav a { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: var(--gold); text-decoration: none; }
+    .article-nav a:hover { color: var(--gold-light); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo">Funding <span>Grade</span></a>
+      <nav class="header-nav">
+        <a href="/#how-it-works">How It Works</a>
+        <a href="/blog">Blog</a>
+        <a href="/#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="article-hero">
+    <div class="container">
+      <a href="/blog" class="article-back">← Back to Blog</a>
+      <div class="article-tag">Lending Fundamentals</div>
+      <h1>Global Cash Flow vs. DSCR —<br /><em>Why Your Lender Looks at Both</em></h1>
+      <div class="article-meta">7 min read · Underwriting &amp; Ratios · Written by Lending Professionals</div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="article-body">
+
+      <p>Most business owners preparing a loan application focus on one number: their DSCR. They calculate their business income, divide it by their business debt payments, and feel confident when the ratio clears 1.25x. What they don't realize is that many lenders — particularly SBA-approved lenders and community banks — run a second, broader calculation at the same time.</p>
+
+      <p>It's called global cash flow analysis. And it looks at your entire financial picture — business and personal — combined. A strong business DSCR won't save you if your personal financial obligations pull the global number below the minimum. Understanding both is essential before you apply.</p>
+
+      <h2>A Quick Refresher on Business DSCR</h2>
+
+      <p>Business DSCR answers one question: can your business income cover your business debt payments?</p>
+
+      <div class="formula-box">
+        <div class="formula-label">Business DSCR</div>
+        <div class="formula">Business DSCR = Operating Cash Flow (EBITDA) ÷ Total Annual Business Debt Service</div>
+        <div class="formula-desc">Operating Cash Flow is defined by the SBA as EBITDA — Earnings Before Interest, Taxes, Depreciation, and Amortization. Per SBA SOP 50 10 8, the official minimum is 1.15x, though most SBA-approved lenders require 1.25x or higher as their own credit standard.</div>
+      </div>
+
+      <p>This is what most guides cover. Business DSCR is calculated using only business-level income and business-level debt. It intentionally excludes your personal mortgage, car payments, student loans, and other personal obligations.</p>
+
+      <p>That exclusion is deliberate for the business DSCR calculation — but it doesn't mean lenders ignore your personal finances. It means they analyze them separately, through the global cash flow lens.</p>
+
+      <h2>What Is Global Cash Flow?</h2>
+
+      <p>Global cash flow is the combined picture of all income available to you — business and personal — measured against all obligations you carry — business and personal. It is the most comprehensive view a lender can take of your financial position.</p>
+
+      <div class="formula-box">
+        <div class="formula-label">Global Cash Flow Ratio</div>
+        <div class="formula">Global Ratio = (Business OCF + Personal Income) ÷ (Business Debt Service + Personal Debt Service)</div>
+        <div class="formula-desc">Personal income includes W-2 wages from other employment, rental income, investment distributions, and spousal income. Personal debt service includes mortgage payments, auto loans, student loans, and minimum credit card payments. Per SBA SOP 50 10 8, the global ratio must be at least 1:1 — meaning combined income must at minimum cover combined obligations.</div>
+      </div>
+
+      <p>The SBA's official requirement per SOP 50 10 8 is that global cash flow must be at least 1:1. This is a lower bar than the 1.15x minimum for business DSCR — but it catches a different type of risk. A business owner who passes business DSCR but carries a heavy personal debt load may still fail global analysis.</p>
+
+      <h2>Why Global Cash Flow Matters</h2>
+
+      <p>Consider a business owner with a manufacturing company generating $400,000 in annual EBITDA and $280,000 in annual business debt service. That's a business DSCR of 1.43x — comfortably above most lender minimums. On paper, the business looks well-qualified.</p>
+
+      <p>But this owner also has a $5,500/month personal mortgage, two car payments totaling $1,200/month, and is drawing $60,000/year from the business as a personal salary. When the underwriter runs global cash flow, the picture changes:</p>
+
+      <div class="example-block">
+        <div class="example-label">Global Cash Flow Example</div>
+        <div class="example-row">
+          <span class="example-label-text">Business EBITDA</span>
+          <span class="example-value positive">$400,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Owner's personal salary (W-2 from business)</span>
+          <span class="example-value positive">$60,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Total Global Income</span>
+          <span class="example-value positive">$460,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Annual business debt service</span>
+          <span class="example-value negative">$280,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Annual personal mortgage ($5,500/mo)</span>
+          <span class="example-value negative">$66,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Annual personal auto payments ($1,200/mo)</span>
+          <span class="example-value negative">$14,400</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Total Global Obligations</span>
+          <span class="example-value negative">$360,400</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Global Cash Flow Ratio</span>
+          <span class="example-value">$460,000 ÷ $360,400 = <strong>1.28x ✅</strong></span>
+        </div>
+      </div>
+
+      <p>In this case, the global ratio still clears 1:1 — the borrower passes both tests. But notice how much tighter the global number is compared to the business DSCR of 1.43x. A slightly larger mortgage, an additional personal loan, or a lower business income would have pushed this below the threshold.</p>
+
+      <h2>Which Lenders Run Global Cash Flow Analysis?</h2>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Lender Type</th>
+            <th>Global Cash Flow Analysis?</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SBA Lenders (7a, 504)</td>
+            <td>✅ Required</td>
+            <td>SOP 50 10 8 mandates global 1:1 minimum</td>
+          </tr>
+          <tr>
+            <td>Community Banks</td>
+            <td>✅ Common</td>
+            <td>Most run global analysis as standard practice</td>
+          </tr>
+          <tr>
+            <td>Regional / National Banks</td>
+            <td>✅ Standard</td>
+            <td>Often apply stricter global thresholds (1.15x+)</td>
+          </tr>
+          <tr>
+            <td>Online / Alternative Lenders</td>
+            <td>⚠️ Sometimes</td>
+            <td>Many focus on business cash flow only; some run global</td>
+          </tr>
+          <tr>
+            <td>MCA / Revenue-Based Lenders</td>
+            <td>❌ Rarely</td>
+            <td>Focus on revenue, not global obligations</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>What Gets Included in Global Cash Flow</h2>
+
+      <h3>Income Sources Lenders Typically Include</h3>
+      <p>Business operating cash flow (EBITDA) after adjustments. W-2 wages from any outside employment — yours or a co-borrower's. Rental income from investment properties, typically at 75% of gross rents to account for vacancies. Pension, Social Security, or disability income if stable and documentable. Spousal income if the spouse is a guarantor or co-borrower on the loan.</p>
+
+      <h3>Obligations Lenders Typically Include</h3>
+      <p>All business debt service — existing loans, lines of credit, equipment leases, and the proposed new loan payment. Personal mortgage or rent payments. Auto loan and lease payments. Student loan minimum payments. Minimum credit card payments. Child support or alimony obligations. Any other fixed personal financial commitments.</p>
+
+      <div class="callout">
+        <div class="callout-label">What Most Borrowers Get Wrong</div>
+        <p>Many business owners assume their personal mortgage doesn't matter because the loan is a business loan. It absolutely matters — especially for SBA loans where global cash flow analysis is required by the SOP. The most common surprise in underwriting is a borrower with a strong business who carries a large personal debt load from a primary residence, investment properties, or personal loans taken out before the business grew. Run your global number before you apply.</p>
+      </div>
+
+      <h2>How to Calculate Your Own Global Cash Flow</h2>
+
+      <p><strong style="color: var(--white);">Step 1 — List all income sources:</strong> Start with your business EBITDA. Add any W-2 wages, rental income (at 75%), and other documentable personal income. If applying with a co-borrower or spouse, include their income.</p>
+
+      <p><strong style="color: var(--white);">Step 2 — List all debt obligations:</strong> Pull your personal credit report and list every monthly payment — mortgage, auto, student loans, minimum credit card payments. Add your annual business debt service (all loan payments including the new loan you're applying for).</p>
+
+      <p><strong style="color: var(--white);">Step 3 — Run the ratio:</strong> Divide total annual income by total annual obligations. A result of 1.0 or higher clears the SBA minimum. Most conventional lenders want to see 1.15x or higher at the global level.</p>
+
+      <p><strong style="color: var(--white);">Step 4 — Identify the gaps:</strong> If your global ratio is below threshold, identify which obligations are dragging it down. Paying off a car loan or personal credit card balance before applying can meaningfully move this number.</p>
+
+      <h2>How to Strengthen Your Global Cash Flow Position</h2>
+
+      <p>Unlike business DSCR — which requires growing revenue or reducing business debt — global cash flow can often be improved through personal financial decisions. Paying off a personal auto loan or credit card before applying adds those monthly payments directly back into your global cash flow capacity. If a spouse or business partner has stable income, including them as a co-borrower expands the income side of the equation. Documenting rental income properly — showing 12 months of bank deposits matching the lease amount — ensures that income is credited in the analysis rather than ignored.</p>
+
+      <div class="article-cta">
+        <h3>Know Your Business DSCR Before You Apply</h3>
+        <p>Funding Grade's Advanced DSCR mode calculates your business debt service coverage ratio using your actual financial figures — the same framework SBA lenders use as the starting point for their analysis.</p>
+        <a href="/#estimator" class="btn-primary">Calculate My DSCR Free →</a>
+      </div>
+
+      <div class="article-nav">
+        <a href="/blog-caplines.html">Next: SBA CAPLines Explained →</a>
+        <a href="/blog">← All Articles</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">Funding <span>Grade</span></div>
+      <p class="footer-tagline">Know before you apply.</p>
+      <p class="footer-legal">© 2025 Funding Grade. For educational purposes only. Not financial advice.</p>
+    </div>
+  </footer>
+</body>
+</html>
