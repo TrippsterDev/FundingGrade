@@ -23,6 +23,8 @@
     .article-hero { padding: 60px 0 40px; }
     .article-back { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: var(--gold); text-decoration: none; display: inline-block; margin-bottom: 24px; letter-spacing: 0.04em; }
     .article-back:hover { color: var(--gold-light); }
+    .mobile-blog-link{display:none}
+    @media(max-width:768px){.mobile-blog-link{display:inline-block;font-family:'IBM Plex Sans',sans-serif;font-size:.85rem;font-weight:600;color:#C9A84C;text-decoration:none;letter-spacing:.04em}}
     .article-tag { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
     .article-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 20px; max-width: 760px; }
     .article-hero h1 em { font-style: italic; color: var(--gold); }
@@ -58,6 +60,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a href="/" class="logo">Funding <span>Grade</span></a>
+      <a href="/blog" class="mobile-blog-link">Blog &rarr;</a>
       <nav class="header-nav">
         <a href="/#how-it-works">How It Works</a>
         <a href="/blog">Blog</a>

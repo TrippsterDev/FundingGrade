@@ -81,6 +81,8 @@
     .sba-nudge strong{color:#C9A84C}
     .sba-elig-cta{display:inline-block;margin-top:10px;background:#C9A84C;color:#0A1628;font-family:'IBM Plex Sans',sans-serif;font-size:.78rem;font-weight:700;padding:7px 16px;border-radius:6px;text-decoration:none;letter-spacing:.02em;transition:background .2s,transform .2s}
     .sba-elig-cta:hover{background:#e8c97a;transform:translateY(-1px)}
+    .mobile-blog-link{display:none}
+    @media(max-width:768px){.mobile-blog-link{display:inline-block;font-family:'IBM Plex Sans',sans-serif;font-size:.85rem;font-weight:600;color:#C9A84C;text-decoration:none;letter-spacing:.04em}.mobile-blog-link:hover{color:#e8c97a}}
   </style>
 </head>
 <body>
@@ -88,6 +90,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a href="/" class="logo">Funding <span>Grade</span></a>
+      <a href="/blog" class="mobile-blog-link">Blog →</a>
       <nav class="header-nav">
         <a href="#how-it-works">How It Works</a>
         <a href="/blog">Blog</a>

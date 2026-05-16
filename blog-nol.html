@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Net Operating Loss (NOL) Explained — How Business Losses Carry Forward | Funding Grade</title>
+  <meta name="description" content="A net operating loss isn't the end — it's a tax asset you can carry forward indefinitely. Here's how NOLs work, what the 80% limitation means, and how lenders view loss carry-forwards on your return." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.fundinggrade.com/blog-nol.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8868825563724751" crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T5MNWR1EGT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T5MNWR1EGT');
+  </script>
+  <style>
+    .article-hero { padding: 60px 0 40px; }
+    .article-back { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: var(--gold); text-decoration: none; display: inline-block; margin-bottom: 24px; letter-spacing: 0.04em; }
+    .article-back:hover { color: var(--gold-light); }
+    .mobile-blog-link{display:none}
+    @media(max-width:768px){.mobile-blog-link{display:inline-block;font-family:'IBM Plex Sans',sans-serif;font-size:.85rem;font-weight:600;color:#C9A84C;text-decoration:none;letter-spacing:.04em}}
+    .article-tag { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .article-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 20px; max-width: 760px; }
+    .article-hero h1 em { font-style: italic; color: var(--gold); }
+    .article-meta { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-bottom: 40px; }
+    .article-body { max-width: 720px; padding-bottom: 80px; }
+    .article-body p { font-family: 'IBM Plex Sans', sans-serif; font-size: 1rem; color: var(--white-dim); line-height: 1.85; margin-bottom: 24px; }
+    .article-body h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 600; color: var(--white); margin: 48px 0 16px; line-height: 1.3; }
+    .article-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; color: var(--gold-light); margin: 32px 0 12px; }
+    .formula-box { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.2); border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; padding: 20px 24px; margin: 28px 0; }
+    .formula-box .formula-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; font-family: 'IBM Plex Sans', sans-serif; }
+    .formula-box .formula { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 8px; font-family: 'IBM Plex Sans', sans-serif; line-height: 1.5; }
+    .formula-box .formula-desc { font-size: 0.85rem; color: var(--white-dim); line-height: 1.6; font-family: 'IBM Plex Sans', sans-serif; }
+    .example-block { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.12); border-radius: 14px; padding: 28px; margin: 32px 0; }
+    .example-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .example-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.875rem; }
+    .example-row:last-child { border-bottom: none; font-weight: 600; color: var(--white); }
+    .example-row.highlight { background: rgba(201,168,76,0.05); margin: 0 -8px; padding: 8px 8px; border-radius: 4px; }
+    .example-label-text { color: var(--white-dim); }
+    .example-value { color: var(--white); font-weight: 500; }
+    .example-value.positive { color: #4ade80; }
+    .example-value.negative { color: #f87171; }
+    .example-value.gold { color: var(--gold); }
+    .rule-block { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.12); border-radius: 12px; padding: 22px 26px; margin: 16px 0; }
+    .rule-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+    .rule-desc { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.875rem; color: var(--white-dim); line-height: 1.7; margin: 0; }
+    .callout { background: linear-gradient(135deg, #0f2137 0%, #1a3a5c 100%); border-radius: 12px; padding: 24px 28px; margin: 32px 0; }
+    .callout-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .callout p { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 0; }
+    .comparison-table { width: 100%; border-collapse: collapse; margin: 28px 0; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.875rem; }
+    .comparison-table th { background: rgba(201,168,76,0.12); color: var(--gold-light); font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(201,168,76,0.2); }
+    .comparison-table td { padding: 12px 16px; color: var(--white-dim); border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; line-height: 1.6; }
+    .comparison-table tr:last-child td { border-bottom: none; }
+    .article-cta { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.2); border-radius: 16px; padding: 36px; text-align: center; margin: 48px 0; }
+    .article-cta h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--white); margin-bottom: 12px; }
+    .article-cta p { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; color: var(--white-dim); margin-bottom: 24px; }
+    .article-nav { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.08); justify-content: space-between; }
+    .article-nav a { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: var(--gold); text-decoration: none; }
+    .article-nav a:hover { color: var(--gold-light); }
+    .disclaimer { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.78rem; color: rgba(255,255,255,0.3); line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo">Funding <span>Grade</span></a>
+      <a href="/blog" class="mobile-blog-link">Blog &rarr;</a>
+      <nav class="header-nav">
+        <a href="/#how-it-works">How It Works</a>
+        <a href="/blog">Blog</a>
+        <a href="/#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="article-hero">
+    <div class="container">
+      <a href="/blog" class="article-back">← Back to Blog</a>
+      <div class="article-tag">Tax &amp; Lending</div>
+      <h1>Net Operating Loss (NOL) Explained —<br /><em>How Business Losses Carry Forward</em></h1>
+      <div class="article-meta">8 min read · Tax &amp; Lending · Written by Lending Professionals</div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="article-body">
+
+      <p>A year when your business expenses exceed your income doesn't just hurt — it produces a tax asset. That asset is called a Net Operating Loss, and it can follow your business forward into future profitable years, reducing the taxes you owe when you're back in the black.</p>
+
+      <p>Most business owners know NOLs exist. Far fewer understand how the rules actually work — especially after the Tax Cuts and Jobs Act (TCJA) in 2017 fundamentally changed the NOL landscape. And almost none think about how an NOL on their tax return affects their ability to get a business loan. This article covers all three dimensions.</p>
+
+      <h2>What Is a Net Operating Loss?</h2>
+
+      <p>A Net Operating Loss occurs when your allowable tax deductions for the year exceed your gross income. Per IRS Publication 536, the loss must generally originate from the operation of a trade or business — or in some cases from casualty and theft losses. A passive activity loss, by contrast, is subject to separate limitations under IRC Section 469 and is generally not included in the NOL calculation.</p>
+
+      <div class="formula-box">
+        <div class="formula-label">Basic NOL Definition — IRS Publication 536</div>
+        <div class="formula">NOL = Allowable Business Deductions − Gross Income (when deductions exceed income)</div>
+        <div class="formula-desc">Not every business loss produces an NOL. Personal deductions, capital losses, and certain other items are excluded from the NOL calculation. Use the worksheet in IRS Publication 536 to determine your actual NOL amount — the calculation is more involved than simply subtracting revenue from expenses.</div>
+      </div>
+
+      <p>An important preliminary step: before calculating your NOL, the Excess Business Loss limitation under IRC Section 461(l) must be applied. For 2024, non-corporate taxpayers can only deduct business losses up to $289,000 (single filers) or $578,000 (married filing jointly). Any loss exceeding this threshold is not available to offset non-business income in the current year — instead, it becomes an NOL carryforward automatically.</p>
+
+      <h2>The TCJA Changed Everything — What You Need to Know</h2>
+
+      <p>Before 2018, NOL rules were relatively straightforward: carry back 2 years to get a refund, then carry forward up to 20 years. The Tax Cuts and Jobs Act eliminated most of that and replaced it with a new framework. Understanding which rules apply to you depends on when your NOL was generated.</p>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Rule</th>
+            <th>Pre-2018 NOLs</th>
+            <th>Post-2017 NOLs</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Carryback</td>
+            <td>2 years (general)</td>
+            <td>Eliminated for most taxpayers</td>
+          </tr>
+          <tr>
+            <td>Carryforward period</td>
+            <td>Up to 20 years</td>
+            <td>Indefinite</td>
+          </tr>
+          <tr>
+            <td>Deduction limit</td>
+            <td>100% of taxable income</td>
+            <td>80% of taxable income</td>
+          </tr>
+          <tr>
+            <td>Farming loss carryback</td>
+            <td>5 years</td>
+            <td>2 years (exception still applies)</td>
+          </tr>
+          <tr>
+            <td>CARES Act exception</td>
+            <td>N/A</td>
+            <td>5-year carryback allowed for 2018–2020 NOLs only</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>For most small business owners operating today, the relevant rules are: no carryback, indefinite carryforward, and an 80% annual deduction limit. The carryback option that once allowed businesses to file amended returns and receive refunds for prior profitable years is essentially gone for current losses.</p>
+
+      <h2>The 80% Limitation — The Rule That Trips People Up</h2>
+
+      <p>This is the most misunderstood aspect of current NOL rules. When you carry a post-2017 NOL forward into a profitable year, you cannot use it to eliminate your entire tax liability. You can only deduct up to 80% of your taxable income for that year using NOL carryforwards.</p>
+
+      <div class="example-block">
+        <div class="example-label">80% Limitation — Worked Example</div>
+        <div class="example-row">
+          <span class="example-label-text">NOL carryforward from prior year</span>
+          <span class="example-value gold">$200,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Taxable income in current year (before NOL)</span>
+          <span class="example-value positive">$150,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Maximum NOL deduction (80% × $150,000)</span>
+          <span class="example-value">$120,000</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Taxable income after NOL deduction</span>
+          <span class="example-value">$30,000 (still taxable)</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label-text">Remaining NOL carryforward to next year</span>
+          <span class="example-value gold">$80,000</span>
+        </div>
+      </div>
+
+      <p>Notice that even though you had $200,000 of carryforward losses available, you can only offset $120,000 of income — leaving $30,000 still subject to tax. The remaining $80,000 of unused NOL rolls forward to the next year. This process continues indefinitely until the NOL is fully absorbed.</p>
+
+      <p>The practical implication: a large NOL generated in a single bad year will take multiple profitable years to fully utilize. You will continue paying some tax each year even while working through the carryforward balance.</p>
+
+      <h2>The FIFO Rule — Order Matters</h2>
+
+      <p>If you have NOLs from multiple years, the IRS requires you to apply them in chronological order — oldest first. This is the First-In, First-Out (FIFO) method. You cannot strategically pick which year's NOL to use. The oldest available NOL must be fully exhausted before any portion of a more recent NOL can be applied.</p>
+
+      <p>For businesses with a history of losses across multiple years, this requires meticulous tracking. Each year's NOL must be recorded separately, with the initial amount, the portion applied in each subsequent year, and the remaining balance maintained in a running schedule. IRS Publication 536 provides worksheets for this calculation.</p>
+
+      <h2>The Lending Dimension — How Lenders View NOL Carryforwards</h2>
+
+      <p>This is where tax knowledge and lending knowledge intersect — and where most guides stop short. An NOL on your tax return is a tax asset. But to a commercial lender reviewing your loan application, it can look like something else entirely: evidence of a business that has been losing money.</p>
+
+      <h3>What Lenders Actually See</h3>
+      <p>When an underwriter reviews your tax returns, they're analyzing two to three years of history. A year with a net loss — even if it produced a valuable NOL carryforward — shows negative income for that period. In a DSCR calculation, negative operating income doesn't contribute to debt service coverage. It actively reduces it.</p>
+
+      <p>A business with an NOL from two years ago that has since returned to profitability may look fine from a current-year perspective. But if the loss year falls within the lender's review window, it will be visible in the analysis and may require explanation.</p>
+
+      <h3>What Lenders Can and Cannot Adjust</h3>
+      <p>Experienced commercial underwriters know how to analyze loss years in context. They look for whether the loss was:</p>
+      <p><strong style="color: var(--white);">One-time and non-recurring:</strong> A single year of losses caused by a specific event — a major equipment failure, a lawsuit, a key customer departure, a pandemic — can often be documented and explained. Many lenders will allow an adjusted or normalized DSCR that excludes verified non-recurring losses.</p>
+      <p><strong style="color: var(--white);">Part of a trend:</strong> Multiple years of losses, or losses that appear to reflect an underlying structural problem with the business model, are harder to explain away. A lender who sees three years of declining revenue and recurring losses will have difficulty approving new debt regardless of the current year's NOL carryforward balance.</p>
+      <p><strong style="color: var(--white);">Driven by non-cash charges:</strong> Depreciation and amortization are non-cash deductions that reduce taxable income without reducing actual cash flow. A business with strong operating cash flow but a large depreciation expense may show a tax loss while remaining genuinely cash-flow positive. Underwriters who know what they're doing will add depreciation back to calculate EBITDA — which may be significantly stronger than the net income on the return suggests.</p>
+
+      <div class="callout">
+        <div class="callout-label">The Lender's Perspective on NOL History</div>
+        <p>An NOL carryforward on your balance sheet is a deferred tax asset — it will reduce future tax liability and improve future net income. But lenders don't give credit for future tax savings in the current underwriting cycle. What they look at is historical and current cash flow. If your loss year is explainable and behind you, document it thoroughly in your loan narrative. If the losses are recent and ongoing, address the root cause before applying — not during underwriting.</p>
+      </div>
+
+      <h2>What to Do If You Have NOL Carryforwards</h2>
+
+      <p><strong style="color: var(--white);">Before applying for a loan:</strong> Prepare a written explanation of any loss years in the lender's review window. Be specific — what caused the loss, why it was non-recurring, and what has changed. Include supporting documentation where possible. Don't let the underwriter discover the loss years on their own and draw their own conclusions.</p>
+
+      <p><strong style="color: var(--white);">Work with your accountant:</strong> NOL calculations are complex, especially with multiple loss years, the 80% limitation, and the FIFO sequencing requirement. Maintaining a clean, accurate NOL schedule is essential — both for tax purposes and for loan documentation. An accountant who can produce a clear carryforward schedule on request is an asset during underwriting.</p>
+
+      <p><strong style="color: var(--white);">Understand your timing:</strong> If you're planning a significant capital investment that would generate a large depreciation deduction — potentially creating an NOL — think through the tax and lending implications together. The timing of loss years relative to future loan applications matters.</p>
+
+      <p><strong style="color: var(--white);">For farming losses:</strong> The 2-year carryback exception still applies. If you operate in agriculture, consult a tax professional about whether carrying back farming losses to generate a refund makes more sense than carrying them forward.</p>
+
+      <div class="article-cta">
+        <h3>See How Your Financials Score With Lenders</h3>
+        <p>Funding Grade evaluates your business loan readiness using real commercial lending criteria — including how lenders analyze your income, debt service, and cash flow history.</p>
+        <a href="/#estimator" class="btn-primary">Check My Score Free →</a>
+      </div>
+
+      <p class="disclaimer">This article is for educational purposes only and does not constitute tax or legal advice. NOL rules are complex and fact-specific. Consult a qualified tax professional before making decisions based on NOL treatment. IRS Publication 536 is the authoritative source for NOL rules for individuals, estates, and trusts.</p>
+
+      <div class="article-nav">
+        <a href="/blog-credit-not-available.html">← Credit Not Available Elsewhere</a>
+        <a href="/blog">All Articles →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">Funding <span>Grade</span></div>
+      <p class="footer-tagline">Know before you apply.</p>
+      <p class="footer-legal">© 2025 Funding Grade. For educational purposes only. Not financial advice.</p>
+    </div>
+  </footer>
+</body>
+</html>
