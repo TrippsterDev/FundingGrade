@@ -124,7 +124,7 @@ const loanPurposeMap = {
   'equipment':       { label: 'Equipment Purchase',             sba: 'SBA 7(a) or SBA 504 — equipment financing up to $5.5M with long repayment terms.' },
   'real_estate':     { label: 'Real Estate',                    sba: 'SBA 504 — best fit for owner-occupied commercial real estate up to $5.5M at fixed rates.' },
   'expansion':       { label: 'Business Expansion or Purchase', sba: 'SBA 7(a) — covers acquisitions, expansions, and business purchases up to $5M.' },
-  'refinance':       { label: 'Refinance Existing Debt',        sba: 'SBA 7(a) — can refinance eligible existing business debt. Note: MCA debt is no longer eligible for SBA refinancing as of 2025.' }
+  'refinance':       { label: 'Refinance Existing Debt',        sba: 'SBA 7(a) — can refinance eligible existing business debt. Note: Merchant cash advances and factoring agreements are not eligible for SBA refinancing.' }
 };
 
 // ============================================
