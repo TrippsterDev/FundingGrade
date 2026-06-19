@@ -63,7 +63,6 @@
     .sba-guidance{background:linear-gradient(135deg,#0f2137 0%,#1a3a5c 100%);border-radius:12px;padding:18px 20px;margin-bottom:20px}
     .sba-eyebrow{font-family:'IBM Plex Sans',sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:#C9A84C;margin-bottom:8px;font-weight:600}
     .sba-text{font-family:'IBM Plex Sans',sans-serif;font-size:.875rem;color:rgba(255,255,255,.8);line-height:1.6}
-    /* ---- SBA ELIGIBILITY CARDS ---- */
     .sba-elig-cards{display:flex;flex-direction:column;gap:10px;margin-top:4px}
     .sba-elig-card{background:rgba(255,255,255,.04);border-radius:10px;padding:14px 16px;border-left:3px solid #666}
     .sba-elig-card.eligible{border-color:#4ade80}
@@ -103,7 +102,7 @@
     <div class="container hero-inner">
       <div class="hero-badge">Free · No Login · Instant Results</div>
       <h1>Does your business<br /><em>qualify for a loan?</em></h1>
-      <p class="hero-sub">Answer 9 questions. Get your funding readiness score, a plain-English breakdown of your chances, and exactly what's holding you back — in under 60 seconds.</p>
+      <p class="hero-sub">Answer a few questions. Get your funding readiness score, a plain-English breakdown of your chances, and exactly what's holding you back — in under 60 seconds.</p>
       <a href="#estimator" class="btn-primary">Check My Score →</a>
       <div class="hero-trust">
         <span>🔒 We never sell your data</span><span>·</span>
@@ -125,7 +124,7 @@
         </div>
 
         <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
-        <div class="progress-label" id="progressLabel">Step 1 of 9</div>
+        <div class="progress-label" id="progressLabel">Step 1 of 10</div>
 
         <!-- SIMPLE FORM -->
         <form id="loanForm" novalidate>
@@ -281,7 +280,38 @@
             </div>
             <div class="step-nav">
               <button type="button" class="btn-back" onclick="prevStep(9)">← Back</button>
-              <button type="button" class="btn-submit" id="submitBtn" onclick="submitForm()">Get My Score →</button>
+              <button type="button" class="btn-next" onclick="nextStep(9)">Next →</button>
+            </div>
+          </div>
+
+          <div class="form-step" data-step="10">
+            <div class="step-icon">📁</div>
+            <h2>Do you have 2 years of business tax returns available?</h2>
+            <p class="step-hint">Most SBA and bank lenders require 2 years of business tax returns. This is one of the most common deal killers in the application process.</p>
+            <div class="options-grid">
+              <label class="option-card"><input type="radio" name="taxReturns" value="tax_yes" /><span>Yes — 2 full years</span></label>
+              <label class="option-card"><input type="radio" name="taxReturns" value="tax_one_year" /><span>One year only</span></label>
+              <label class="option-card"><input type="radio" name="taxReturns" value="tax_no" /><span>No — not available</span></label>
+              <label class="option-card"><input type="radio" name="taxReturns" value="tax_too_new" /><span>Business is too new</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevStep(10)">← Back</button>
+              <button type="button" class="btn-next" onclick="nextStep(10)">Next →</button>
+            </div>
+          </div>
+
+          <div class="form-step" data-step="11">
+            <div class="step-icon">📝</div>
+            <h2>Do you have a business plan or financial projections?</h2>
+            <p class="step-hint">For businesses under 12 months old, lenders — especially SBA Microloan programs and CDFIs — typically require a business plan or financial projections in place of tax returns.</p>
+            <div class="options-grid">
+              <label class="option-card"><input type="radio" name="businessPlan" value="bp_yes" /><span>Yes — complete</span></label>
+              <label class="option-card"><input type="radio" name="businessPlan" value="bp_in_progress" /><span>In progress</span></label>
+              <label class="option-card"><input type="radio" name="businessPlan" value="bp_no" /><span>No</span></label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-back" onclick="prevStep(11)">← Back</button>
+              <button type="button" class="btn-submit" onclick="submitForm()">Get My Score →</button>
             </div>
           </div>
 
@@ -477,7 +507,7 @@
     <div class="container">
       <h2 class="section-title">How It Works</h2>
       <div class="steps-row">
-        <div class="how-step"><div class="how-num">01</div><h3>Answer 9 Questions</h3><p>No personal information required. No login, no credit pull, no email. Just your business profile.</p></div>
+        <div class="how-step"><div class="how-num">01</div><h3>Answer a Few Questions</h3><p>No personal information required. No login, no credit pull, no email. Just your business profile.</p></div>
         <div class="how-step"><div class="how-num">02</div><h3>Get Your Score</h3><p>Our AI analyzes your inputs using the same criteria commercial lenders apply to every application.</p></div>
         <div class="how-step"><div class="how-num">03</div><h3>Know What to Fix</h3><p>Plain-English explanation of exactly what's helping you, what's hurting you, and what to do next.</p></div>
       </div>
