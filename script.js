@@ -2,16 +2,16 @@
 // FUNDING GRADE — Scoring Logic & Form Handler
 // ============================================
 let currentStep = 1;
-const totalSteps = 9;
+const totalSteps = 11;
 const totalAdvSteps = 7;
 let currentMode = 'simple';
 let currentAdvStep = 1;
-
+ 
 function formatCurrency(val) {
   if (!val && val !== 0) return '$0';
   return '$' + Math.round(val).toLocaleString('en-US');
 }
-
+ 
 // ============================================
 // MODE TOGGLE
 // ============================================
@@ -39,7 +39,7 @@ function setMode(mode) {
     updateAdvProgress(currentAdvStep);
   }
 }
-
+ 
 // ============================================
 // SIMPLE MODE — NAVIGATION
 // ============================================
@@ -47,26 +47,50 @@ function nextStep(step) {
   const stepEl   = document.querySelector(`[data-step="${step}"]`);
   const selected = stepEl.querySelector('input[type="radio"]:checked');
   if (!selected) { shakeStep(stepEl); return; }
+ 
+  // After step 10 (tax returns), check if step 11 (business plan) should be shown
+  // Step 11 is conditional — only shown if timeInBusiness = under12mo
+  if (step === 10) {
+    const form = document.getElementById('loanForm');
+    const timeInBusiness = form.querySelector('input[name="timeInBusiness"]:checked')?.value;
+    if (timeInBusiness !== 'under12mo') {
+      // Skip step 11 entirely — go straight to submit
+      showStep(10, 11); // show step 11 briefly so submit triggers correctly
+      // Actually: hide step 10, jump to submit
+      document.querySelector('[data-step="10"]').classList.remove('active');
+      submitForm();
+      return;
+    }
+  }
+ 
   currentStep = step + 1;
   showStep(step, currentStep);
   updateProgress(currentStep);
 }
+ 
 function prevStep(step) {
+  // If going back from step 11, check if we should skip it
+  // (handles edge case where user somehow reaches 11 and goes back)
   currentStep = step - 1;
   showStep(step, currentStep);
   updateProgress(currentStep);
 }
+ 
 function showStep(from, to) {
   document.querySelector(`[data-step="${from}"]`).classList.remove('active');
   const next = document.querySelector(`[data-step="${to}"]`);
   if (next) next.classList.add('active');
 }
+ 
 function updateProgress(step) {
+  // Progress reflects visible steps. Step 11 is conditional so show max 10 in label
+  // unless actually on step 11
+  const displayTotal = step === 11 ? 11 : 10;
   const pct = (step / totalSteps) * 100;
   document.getElementById('progressBar').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = `Step ${step} of ${totalSteps}`;
+  document.getElementById('progressLabel').textContent = `Step ${step} of ${displayTotal}`;
 }
-
+ 
 // ============================================
 // ADVANCED MODE — NAVIGATION
 // ============================================
@@ -102,7 +126,7 @@ function updateAdvProgress(step) {
   document.getElementById('progressBar').style.width = pct + '%';
   document.getElementById('progressLabel').textContent = `Step ${step} of ${totalAdvSteps}`;
 }
-
+ 
 // ============================================
 // SHAKE UTILITY
 // ============================================
@@ -115,7 +139,7 @@ function shakeStep(el) {
 const shakeStyle = document.createElement('style');
 shakeStyle.textContent = `@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}`;
 document.head.appendChild(shakeStyle);
-
+ 
 // ============================================
 // LOAN PURPOSE MAP
 // ============================================
@@ -126,7 +150,7 @@ const loanPurposeMap = {
   'expansion':       { label: 'Business Expansion or Purchase', sba: 'SBA 7(a) — covers acquisitions, expansions, and business purchases up to $5M.' },
   'refinance':       { label: 'Refinance Existing Debt',        sba: 'SBA 7(a) — can refinance eligible existing business debt. Note: Merchant cash advances and factoring agreements are not eligible for SBA refinancing.' }
 };
-
+ 
 // ============================================
 // ANSWER LABEL MAP
 // ============================================
@@ -140,16 +164,20 @@ const answerLabels = {
   'ecommerce':'E-Commerce','manufacturing':'Manufacturing','realestate':'Real Estate','transportation':'Transportation & Logistics','other':'Other',
   'no':'No liens','yes':'Has liens',
   'under50k':'Loan <$50K','50k_250k':'Loan $50K–$250K','250k_500k':'Loan $250K–$500K','500k_1m':'Loan $500K–$1M','over1m':'Loan >$1M',
-  'working_capital':'Working Capital','equipment':'Equipment','real_estate':'Real Estate','expansion':'Expansion / Acquisition','refinance':'Refinance'
+  'working_capital':'Working Capital','equipment':'Equipment','real_estate':'Real Estate','expansion':'Expansion / Acquisition','refinance':'Refinance',
+  // Tax returns
+  'tax_yes':'2 yrs tax returns: Yes','tax_one_year':'1 yr tax return','tax_no':'No tax returns','tax_too_new':'Too new for returns',
+  // Business plan (conditional)
+  'bp_yes':'Business plan: Yes','bp_in_progress':'Business plan: In progress','bp_no':'No business plan'
 };
-
+ 
 // ============================================
 // SIMPLE MODE — SCORING ENGINE
 // ============================================
 function calculateScore(data) {
   let score = 0;
   const factors = [];
-
+ 
   const timeMap = {
     'under12mo': { pts: 0,  label: 'Under 12 months is a major barrier — most lenders require at least 1 year.' },
     '1yr_2yr':   { pts: 12, label: '1–2 years meets basic requirements for most lenders.' },
@@ -160,7 +188,7 @@ function calculateScore(data) {
   const time = timeMap[data.timeInBusiness] || { pts: 0, label: 'Time in business not recognized.' };
   score += time.pts;
   factors.push({ label: 'Time in Business', pts: time.pts, max: 20, note: time.label });
-
+ 
   const revMap = {
     'under50k':  { pts: 4,  label: 'Under $50K annual revenue limits your options — most lenders want $100K+.' },
     '50k_150k':  { pts: 10, label: '$50K–$150K revenue opens the door to alternative and online lenders.' },
@@ -171,7 +199,7 @@ function calculateScore(data) {
   const rev = revMap[data.revenue] || { pts: 0, label: 'Revenue not recognized.' };
   score += rev.pts;
   factors.push({ label: 'Annual Revenue', pts: rev.pts, max: 20, note: rev.label });
-
+ 
   const creditMap = {
     'under580': { pts: 0,  label: 'Below 580 is subprime — most conventional lenders will decline.' },
     '581_630':  { pts: 6,  label: '581–630 is below average — limited to alternative lenders at higher rates.' },
@@ -183,7 +211,7 @@ function calculateScore(data) {
   const credit = creditMap[data.creditScore] || { pts: 0, label: 'Credit score not recognized.' };
   score += credit.pts;
   factors.push({ label: 'Personal Credit Score', pts: credit.pts, max: 25, note: credit.label });
-
+ 
   const debtMap = {
     'none':           { pts: 15, label: 'No existing debt is ideal — lenders see clean capacity to repay.' },
     'under50k_debt':  { pts: 12, label: 'Under $50K existing debt is manageable for most lenders.' },
@@ -195,7 +223,7 @@ function calculateScore(data) {
   const debt = debtMap[data.existingDebt] || { pts: 0, label: 'Debt level not recognized.' };
   score += debt.pts;
   factors.push({ label: 'Existing Debt Load', pts: debt.pts, max: 15, note: debt.label });
-
+ 
   const industryMap = {
     'professional':   { pts: 8, label: 'Professional services is low-risk — favorable industry classification.' },
     'healthcare':     { pts: 8, label: 'Healthcare is a preferred industry for most commercial lenders.' },
@@ -211,7 +239,7 @@ function calculateScore(data) {
   const ind = industryMap[data.industry] || { pts: 0, label: 'Industry not recognized.' };
   score += ind.pts;
   factors.push({ label: 'Industry Classification', pts: ind.pts, max: 8, note: ind.label });
-
+ 
   const balanceMap = {
     'under5k':       { pts: 0, label: 'Under $5K average balance suggests tight cash flow — lenders may see this as a repayment risk.' },
     '5k_25k':        { pts: 2, label: '$5K–$25K average balance is modest — workable for smaller loan amounts.' },
@@ -223,14 +251,14 @@ function calculateScore(data) {
   const bal = balanceMap[data.bankBalance] || { pts: 0, label: 'Bank balance not recognized.' };
   score += bal.pts;
   factors.push({ label: 'Average Bank Balance', pts: bal.pts, max: 7, note: bal.label });
-
+ 
   if (data.taxLiens === 'no') {
     score += 3;
     factors.push({ label: 'Tax Liens / Judgments', pts: 3, max: 3, note: 'No liens or judgments — clean public record is exactly what lenders want to see.' });
   } else {
     factors.push({ label: 'Tax Liens / Judgments', pts: 0, max: 3, note: 'Outstanding tax liens or judgments are serious — most conventional lenders will require these to be resolved.' });
   }
-
+ 
   const loanMap = {
     'under50k':  { pts: 2, label: 'Loan amount is modest — very achievable for most qualified borrowers.' },
     '50k_250k':  { pts: 2, label: 'Loan amount is reasonable — aligns well with standard business financing.' },
@@ -241,13 +269,36 @@ function calculateScore(data) {
   const loan = loanMap[data.loanAmount] || { pts: 0, label: 'Loan amount not recognized.' };
   score += loan.pts;
   factors.push({ label: 'Loan Amount vs. Profile', pts: loan.pts, max: 2, note: loan.label });
-
+ 
+  // Tax Returns (new — Q10)
+  const taxMap = {
+    'tax_yes':      { pts: 5, label: '2 years of tax returns available — strong documentation that most SBA and bank lenders require.' },
+    'tax_one_year': { pts: 3, label: '1 year of tax returns available — acceptable for some lenders; 2 years preferred for SBA 7(a).' },
+    'tax_no':       { pts: 0, label: 'No tax returns available is a significant gap — most lenders require at least 1–2 years of returns.' },
+    'tax_too_new':  { pts: 1, label: 'Business is too new for tax returns — lenders will rely more heavily on bank statements and projections.' }
+  };
+  const tax = taxMap[data.taxReturns] || { pts: 0, label: 'Tax return status not recognized.' };
+  score += tax.pts;
+  factors.push({ label: 'Tax Returns Available', pts: tax.pts, max: 5, note: tax.label });
+ 
+  // Business Plan (new — Q11, conditional on under12mo)
+  if (data.timeInBusiness === 'under12mo' && data.businessPlan) {
+    const bpMap = {
+      'bp_yes':         { pts: 3, label: 'Having a business plan or financial projections significantly improves your SBA Microloan and startup loan odds.' },
+      'bp_in_progress': { pts: 1, label: 'A business plan in progress is a good start — completing it before applying strengthens your case considerably.' },
+      'bp_no':          { pts: 0, label: 'No business plan is a notable gap for a startup borrower — most SBA Microloan lenders and CDFIs require one.' }
+    };
+    const bp = bpMap[data.businessPlan] || { pts: 0, label: 'Business plan status not recognized.' };
+    score += bp.pts;
+    factors.push({ label: 'Business Plan / Projections', pts: bp.pts, max: 3, note: bp.label });
+  }
+ 
   const purpose = loanPurposeMap[data.loanPurpose];
   if (purpose) factors.push({ label: 'Loan Purpose', pts: null, max: null, note: `${purpose.label} — ${purpose.sba}` });
-
+ 
   return { score, factors };
 }
-
+ 
 // ============================================
 // ADVANCED MODE — DSCR ENGINE
 // ============================================
@@ -266,14 +317,14 @@ function getDSCRDisplay(dscr) {
   if (dscr >= 1.0)  return { ratio:dscr.toFixed(2)+'x', cssClass:'dscr--tight',    meaning:`Tight. Your income covers debt payments but barely. Most conventional lenders will hesitate — strong compensating factors required.`, activeBand:1 };
   return                   { ratio:dscr.toFixed(2)+'x', cssClass:'dscr--negative', meaning:`Negative. Your current income does not cover existing debt obligations. New financing will be very difficult without first reducing debt.`, activeBand:0 };
 }
-
+ 
 // ============================================
 // ADVANCED MODE — SCORING ENGINE
 // ============================================
 function calculateAdvancedScore(data, dscr) {
   let score = 0;
   const factors = [];
-
+ 
   let dscrPts, dscrNote;
   if (dscr === null)    { dscrPts=20; dscrNote='No existing debt — DSCR not applicable. Lenders will evaluate revenue and cash flow directly.'; }
   else if (dscr >= 1.5) { dscrPts=40; dscrNote=`DSCR of ${dscr.toFixed(2)}x is excellent — strong coverage well above the 1.25x lender minimum.`; }
@@ -283,7 +334,7 @@ function calculateAdvancedScore(data, dscr) {
   else                  { dscrPts=0;  dscrNote=`DSCR of ${dscr.toFixed(2)}x is negative — income does not cover existing debt payments.`; }
   score += dscrPts;
   factors.push({ label:'Debt Service Coverage Ratio (DSCR)', pts:dscrPts, max:40, note:dscrNote });
-
+ 
   const mr = parseFloat(data.monthlyRevenue) || 0;
   let rp, rn;
   if      (mr >= 83333) { rp=20; rn='Revenue over $1M annually — top borrower tier for nearly all products.'; }
@@ -293,7 +344,7 @@ function calculateAdvancedScore(data, dscr) {
   else                   { rp=4;  rn='Under $100K annual revenue limits options significantly.'; }
   score += rp;
   factors.push({ label:'Monthly Revenue', pts:rp, max:20, note:rn });
-
+ 
   const timeMap = {
     'under12mo':{ pts:3,  label:'Under 12 months is a barrier — most lenders require at least 1 year.' },
     '1yr_2yr':  { pts:7,  label:'1–2 years meets basic requirements for most lenders.' },
@@ -304,7 +355,7 @@ function calculateAdvancedScore(data, dscr) {
   const time = timeMap[data.timeInBusiness] || { pts:0, label:'Time in business not recognized.' };
   score += time.pts;
   factors.push({ label:'Time in Business', pts:time.pts, max:15, note:time.label });
-
+ 
   const industryMap = {
     'professional':  { pts:10, label:'Professional services is low-risk — highly favorable classification.' },
     'healthcare':    { pts:10, label:'Healthcare is a preferred industry for most commercial lenders.' },
@@ -320,7 +371,7 @@ function calculateAdvancedScore(data, dscr) {
   const ind = industryMap[data.industry] || { pts:0, label:'Industry not recognized.' };
   score += ind.pts;
   factors.push({ label:'Industry Classification', pts:ind.pts, max:10, note:ind.label });
-
+ 
   const creditMap = {
     'under580':{ pts:0,  label:'Below 580 is subprime — most conventional lenders will decline.' },
     '581_630': { pts:3,  label:'581–630 limits you to alternative lenders at higher rates.' },
@@ -332,7 +383,7 @@ function calculateAdvancedScore(data, dscr) {
   const credit = creditMap[data.creditScore] || { pts:0, label:'Credit score not recognized.' };
   score += credit.pts;
   factors.push({ label:'Personal Credit Score', pts:credit.pts, max:12, note:credit.label });
-
+ 
   const loanMap = {
     'under50k': { pts:3, label:'Loan amount is modest — very achievable for most qualified borrowers.' },
     '50k_250k': { pts:3, label:'Loan amount is reasonable — aligns well with standard business financing.' },
@@ -343,19 +394,18 @@ function calculateAdvancedScore(data, dscr) {
   const loan = loanMap[data.loanAmount] || { pts:0, label:'Loan amount not recognized.' };
   score += loan.pts;
   factors.push({ label:'Loan Amount vs. Profile', pts:loan.pts, max:3, note:loan.label });
-
+ 
   const purpose = loanPurposeMap[data.loanPurpose];
   if (purpose) factors.push({ label:'Loan Purpose', pts:null, max:null, note:`${purpose.label} — ${purpose.sba}` });
-
+ 
   return { score, factors };
 }
-
+ 
 // ============================================
 // SBA ELIGIBILITY ENGINE
 // ============================================
 function calculateSBAEligibility(data, dscr, mode) {
-
-  // Estimate annual revenue
+ 
   let annualRevenue = 0;
   if (mode === 'advanced') {
     annualRevenue = (parseFloat(data.monthlyRevenue) || 0) * 12;
@@ -363,28 +413,28 @@ function calculateSBAEligibility(data, dscr, mode) {
     const revMap = { 'under50k':25000, '50k_150k':100000, '150k_500k':325000, '500k_1m':750000, 'over1m':1500000 };
     annualRevenue = revMap[data.revenue] || 0;
   }
-
+ 
   const timeKey     = data.timeInBusiness;
   const creditKey   = data.creditScore;
   const purpose     = data.loanPurpose;
   const hasTaxLiens = data.taxLiens === 'yes';
   const loanAmtKey  = data.loanAmount;
-
-  // Time helpers
+ 
+  // Tax return signals
+  const noTaxReturns = data.taxReturns === 'tax_no';
+  const onlyOneTaxReturn = data.taxReturns === 'tax_one_year';
+ 
   const timeStrong   = ['2yr_5yr','5yr_10yr','over10yr'].includes(timeKey);
   const timeMarginal = timeKey === '1yr_2yr';
   const timeTooNew   = timeKey === 'under12mo';
-
-  // Credit helpers
+ 
   const creditStrong   = ['681_720','721_780','780plus'].includes(creditKey);
   const creditMarginal = creditKey === '631_680';
   const creditWeak     = ['under580','581_630'].includes(creditKey);
-
-  // DSCR helpers (Advanced only)
+ 
   const dscrWeak     = mode === 'advanced' && dscr !== null && dscr < 1.0;
   const dscrMarginal = mode === 'advanced' && dscr !== null && dscr >= 1.0 && dscr < 1.25;
-
-  // Evaluator helper
+ 
   function evalProgram(checks) {
     let status = 'eligible';
     const issues = [];
@@ -394,8 +444,7 @@ function calculateSBAEligibility(data, dscr, mode) {
     }
     return { status, issues };
   }
-
-  // ---- SBA 7(a) ----
+ 
   const sba7a = evalProgram([
     { fail: hasTaxLiens,            msg: 'Tax liens must be resolved before applying' },
     { fail: timeTooNew,             msg: 'Under 12 months is below most SBA lender minimums' },
@@ -405,9 +454,10 @@ function calculateSBAEligibility(data, dscr, mode) {
     { fail: annualRevenue < 100000, msg: '$100K+ annual revenue required by most SBA 7(a) lenders' },
     { fail: dscrWeak,               msg: 'DSCR below 1.0x is typically disqualifying for SBA 7(a)' },
     { warn: dscrMarginal,           msg: 'DSCR below 1.25x requires strong compensating factors' },
+    { fail: noTaxReturns && !timeTooNew, msg: 'SBA 7(a) lenders require at least 1–2 years of business tax returns' },
+    { warn: onlyOneTaxReturn,       msg: '1 year of returns is acceptable for some SBA lenders; 2 years preferred' },
   ]);
-
-  // ---- SBA 504 ----
+ 
   const purpose504OK = ['real_estate','equipment'].includes(purpose);
   const sba504 = evalProgram([
     { fail: !purpose504OK,          msg: 'SBA 504 is only for real estate or major equipment purchases' },
@@ -416,23 +466,25 @@ function calculateSBAEligibility(data, dscr, mode) {
     { fail: !creditStrong,          msg: '680+ credit score required for SBA 504' },
     { fail: annualRevenue < 250000, msg: '$250K+ annual revenue typically required for SBA 504' },
     { fail: dscrWeak || dscrMarginal, msg: '1.25x+ DSCR required for SBA 504' },
+    { fail: noTaxReturns,           msg: 'SBA 504 requires 2 years of business tax returns' },
   ]);
-
-  // ---- SBA Microloan ----
+ 
   const loanTooHigh = ['250k_500k','500k_1m','over1m'].includes(loanAmtKey);
+  const hasBizPlan  = data.businessPlan === 'bp_yes' || data.businessPlan === 'bp_in_progress';
   const microloan = evalProgram([
     { fail: loanTooHigh,             msg: 'SBA Microloans cap at $50K — your requested amount exceeds this' },
     { fail: annualRevenue > 1000000, msg: 'SBA Microloans target smaller businesses — your revenue may exceed typical eligibility' },
     { warn: hasTaxLiens,             msg: 'Tax liens may complicate approval, though some CDFIs are flexible' },
+    { warn: timeTooNew && !hasBizPlan, msg: 'A business plan or financial projections are typically required for startup Microloans' },
   ]);
-
+ 
   return [
     { ...sba7a,     name:'SBA 7(a)',      maxAmount:'Up to $5M',   bestFor:'Working capital, expansion, equipment, refinancing, most purposes' },
     { ...sba504,    name:'SBA 504',       maxAmount:'Up to $5.5M', bestFor:'Commercial real estate & major equipment only' },
     { ...microloan, name:'SBA Microloan', maxAmount:'Up to $50K',  bestFor:'Startups & small businesses needing modest capital' }
   ];
 }
-
+ 
 // ============================================
 // VERDICT
 // ============================================
@@ -442,36 +494,26 @@ function getVerdict(score) {
   if (score >= 40) return { text:'◇ Needs Work',             css:'verdict--needs-work' };
   return                  { text:'△ Not Ready Yet',           css:'verdict--not-ready' };
 }
-
+ 
 // ============================================
 // AFFILIATE LINKS — purpose-aware
 // ============================================
 function getAffiliateLinks(score, data) {
   const links = [];
   const p = data.loanPurpose;
-
-  // ---- SmartBiz eligibility — based on confirmed partner guide requirements ----
-  // Time: 3+ years minimum (2yr_5yr bucket spans 2-5yrs so included as it covers 3+)
+ 
   const sbTime    = ['2yr_5yr','5yr_10yr','over10yr'].includes(data.timeInBusiness);
-  // Credit: 650+ minimum; 681_720 and above ensures clean leads
   const sbCredit  = ['681_720','721_780','780plus'].includes(data.creditScore);
-  // Revenue: $250K+ annual minimum
-  // Simple mode: 150k_500k spans $150K-$500K (includes $250K+); 500k_1m and over1m clearly qualify
-  // Advanced mode: monthly revenue * 12 >= $250K
   const sbRevSimple = ['150k_500k','500k_1m','over1m'].includes(data.revenue);
   const sbRevAdv    = data.monthlyRevenue && (parseFloat(data.monthlyRevenue) * 12) >= 250000;
   const sbRevenue   = sbRevSimple || sbRevAdv;
-  // Industry: construction, real estate, transportation are ineligible per partner guide
   const sbIndustry  = !['realestate','construction','transportation'].includes(data.industry);
-  // Loan purpose: real estate purchase and acquisitions not funded by SmartBiz
   const sbPurpose   = !['real_estate','expansion'].includes(p);
-  // Bank balance: no excessive overdrafts signal — exclude lowest balance bucket
   const sbBalance   = data.bankBalance !== 'under5k';
-  // Tax liens: disqualifying
   const sbNoLiens   = data.taxLiens !== 'yes';
-
+ 
   const smartbizOK = sbTime && sbCredit && sbRevenue && sbIndustry && sbPurpose && sbBalance && sbNoLiens;
-
+ 
   if (score >= 60) {
     links.push({
       name:'Lendio',
@@ -483,8 +525,7 @@ function getAffiliateLinks(score, data) {
       url:'https://www.lendio.com/?ref=fundingrade', cta:'Check Rates →'
     });
   }
-
-  // SmartBiz — SBA 7(a) preferred lender; only show for profiles that meet their requirements
+ 
   if (smartbizOK) {
     links.push({
       name:'SmartBiz',
@@ -495,7 +536,7 @@ function getAffiliateLinks(score, data) {
       url:'https://smartbizbank.com/assist/partner/trippsterenterprisesllc/dewey', cta:'Check SBA Rates →'
     });
   }
-
+ 
   if (score >= 45) {
     links.push({ name:'Bluevine', desc:'Business lines of credit up to $250K. Fast decisions, no prepayment fees.', url:'https://www.bluevine.com/?ref=fundingrade', cta:'See If You Qualify →' });
   }
@@ -505,7 +546,7 @@ function getAffiliateLinks(score, data) {
   links.push({ name:'Nav', desc:'Free business credit monitoring + matched financing options. A smart first step.', url:'https://nav.nkwcmr.net/c/7254877/1813107/2410', cta:'Check Free →' });
   return links;
 }
-
+ 
 // ============================================
 // ANSWER RECAP
 // ============================================
@@ -519,6 +560,8 @@ function buildAnswerRecap(data, mode) {
     if (data.industry)       items.push(answerLabels[data.industry]       || data.industry);
     if (data.loanAmount)     items.push(answerLabels[data.loanAmount]     || data.loanAmount);
     if (data.loanPurpose)    items.push(answerLabels[data.loanPurpose]    || data.loanPurpose);
+    if (data.taxReturns)     items.push(answerLabels[data.taxReturns]     || data.taxReturns);
+    if (data.businessPlan)   items.push(answerLabels[data.businessPlan]   || data.businessPlan);
   } else {
     if (data.ebitda > 0)         items.push('EBITDA: '         + formatCurrency(data.ebitda));
     else if (data.netIncome > 0) items.push('Net Income YTD: ' + formatCurrency(data.netIncome));
@@ -532,15 +575,22 @@ function buildAnswerRecap(data, mode) {
   }
   return items;
 }
-
+ 
 // ============================================
 // SIMPLE MODE — SUBMIT
 // ============================================
 async function submitForm() {
-  const stepEl = document.querySelector(`[data-step="9"]`);
-  const selected = stepEl.querySelector('input[type="radio"]:checked');
-  if (!selected) { shakeStep(stepEl); return; }
+  // Called either from step 11 next button OR skipped from step 10 for non-startups
   const form = document.getElementById('loanForm');
+ 
+  // Validate last visible step
+  const step11El = document.querySelector('[data-step="11"]');
+  const step11Active = step11El && step11El.classList.contains('active');
+  if (step11Active) {
+    const selected = step11El.querySelector('input[type="radio"]:checked');
+    if (!selected) { shakeStep(step11El); return; }
+  }
+ 
   const data = {
     revenue:        form.querySelector('input[name="revenue"]:checked')?.value,
     timeInBusiness: form.querySelector('input[name="timeInBusiness"]:checked')?.value,
@@ -551,7 +601,10 @@ async function submitForm() {
     taxLiens:       form.querySelector('input[name="taxLiens"]:checked')?.value,
     loanAmount:     form.querySelector('input[name="loanAmount"]:checked')?.value,
     loanPurpose:    form.querySelector('input[name="loanPurpose"]:checked')?.value,
+    taxReturns:     form.querySelector('input[name="taxReturns"]:checked')?.value,
+    businessPlan:   form.querySelector('input[name="businessPlan"]:checked')?.value || null,
   };
+ 
   showLoadingState('loanForm');
   try {
     const { score, factors } = calculateScore(data);
@@ -573,7 +626,7 @@ async function submitForm() {
     alert('Something went wrong. Please try again.');
   }
 }
-
+ 
 // ============================================
 // ADVANCED MODE — SUBMIT
 // ============================================
@@ -617,7 +670,7 @@ async function submitAdvForm() {
     alert('Something went wrong. Please try again.');
   }
 }
-
+ 
 // ============================================
 // LOADING STATE
 // ============================================
@@ -630,7 +683,7 @@ function showLoadingState(formId) {
 function hideLoadingState() {
   document.getElementById('loadingState').style.display = 'none';
 }
-
+ 
 // ============================================
 // AI EXPLANATION — SIMPLE
 // ============================================
@@ -638,22 +691,22 @@ async function getAIExplanation(data, score, factors, verdict) {
   const factorText = factors.filter(f=>f.pts!==null).map(f=>`- ${f.label}: ${f.pts}/${f.max} pts — ${f.note}`).join('\n');
   const purpose = loanPurposeMap[data.loanPurpose];
   const prompt = `You are a plain-English commercial lending advisor. A business owner completed a loan readiness assessment.
-
+ 
 Score: ${score}/100
 Verdict: ${verdict.text}
 Loan Purpose: ${purpose ? purpose.label : 'Not specified'}
 ${purpose ? `SBA Guidance: ${purpose.sba}` : ''}
-
+ 
 Factor breakdown:
 ${factorText}
-
+ 
 Write a 3-4 paragraph personal breakdown. Be direct, specific, and honest.
 Paragraph 1: Summarize their overall position. Reference their loan purpose.
 Paragraph 2: Highlight their strongest factors.
 Paragraph 3: Identify their most critical improvement areas with actionable advice.
 Paragraph 4 (if score < 70): Give one concrete next step they can take this month.
 Do not use bullet points. Warm but professional advisor tone. Address them as "you."`;
-
+ 
   const response = await fetch('/.netlify/functions/score', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ prompt })
@@ -662,7 +715,7 @@ Do not use bullet points. Warm but professional advisor tone. Address them as "y
   const result = await response.json();
   return result.explanation;
 }
-
+ 
 // ============================================
 // AI EXPLANATION — ADVANCED
 // ============================================
@@ -672,7 +725,7 @@ async function getAdvancedAIExplanation(data, score, factors, verdict, dscr, dsc
   const incomeText = data.ebitda > 0 ? `EBITDA: ${formatCurrency(data.ebitda)}` : `Net Income YTD: ${formatCurrency(data.netIncome)} (annualized)`;
   const purpose    = loanPurposeMap[data.loanPurpose];
   const prompt = `You are a plain-English commercial lending advisor. A business owner completed an advanced loan readiness assessment.
-
+ 
 Score: ${score}/100
 Verdict: ${verdict.text}
 Loan Purpose: ${purpose ? purpose.label : 'Not specified'}
@@ -681,17 +734,17 @@ ${dscrText}
 ${incomeText}
 Average Monthly Revenue: ${formatCurrency(data.monthlyRevenue)}
 Monthly Debt Obligations: ${formatCurrency(data.monthlyDebt)}
-
+ 
 Factor breakdown:
 ${factorText}
-
+ 
 Write a 4-paragraph personal breakdown. Be direct, specific, and honest.
 Paragraph 1: Summarize their financial position. Reference their DSCR and loan purpose specifically.
 Paragraph 2: Highlight their two or three strongest factors.
 Paragraph 3: Identify the most critical improvement areas with actionable advice.
 Paragraph 4: Give one concrete next step they can take this month.
 Do not use bullet points. Warm but professional advisor tone. Address them as "you."`;
-
+ 
   const response = await fetch('/.netlify/functions/score', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ prompt })
@@ -700,30 +753,28 @@ Do not use bullet points. Warm but professional advisor tone. Address them as "y
   const result = await response.json();
   return result.explanation;
 }
-
+ 
 // ============================================
 // RENDER SBA SECTION
 // ============================================
 function renderSBASection(sbaEl, sbaEligibility, mode, data) {
   if (!sbaEl) return;
-
+ 
   const badgeLabels = { eligible:'✅ Likely Eligible', possible:'⚠️ Possible', unlikely:'❌ Unlikely' };
-
+ 
   if (mode === 'advanced') {
-    // Full eligibility breakdown
     const smartbizUrl = 'https://smartbizbank.com/assist/partner/trippsterenterprisesllc/dewey';
     const cards = sbaEligibility.map(prog => {
       const issueHTML = prog.issues.length
         ? `<div class="sba-elig-note">${prog.issues.join(' · ')}</div>`
         : `<div class="sba-elig-note" style="color:rgba(74,222,128,.7)">Your profile meets the key requirements for this program.</div>`;
-
-      // SmartBiz CTA only on SBA 7(a) — they don't offer SBA 504 products
+ 
       const showCTA = (prog.status === 'eligible' || prog.status === 'possible')
                    && prog.name === 'SBA 7(a)';
       const ctaHTML = showCTA
         ? `<a href="${smartbizUrl}" target="_blank" rel="noopener sponsored" class="sba-elig-cta">Apply via SmartBiz →</a>`
         : '';
-
+ 
       return `
         <div class="sba-elig-card ${prog.status}">
           <div class="sba-elig-header">
@@ -735,14 +786,13 @@ function renderSBASection(sbaEl, sbaEligibility, mode, data) {
           ${ctaHTML}
         </div>`;
     }).join('');
-
+ 
     sbaEl.style.display = 'block';
     sbaEl.innerHTML = `
       <div class="sba-eyebrow">SBA Loan Eligibility — Based on Your Profile</div>
       <div class="sba-elig-cards">${cards}</div>`;
-
+ 
   } else {
-    // Simple mode: basic guidance + nudge
     const purpose = data && data.loanPurpose ? loanPurposeMap[data.loanPurpose] : null;
     sbaEl.style.display = 'block';
     sbaEl.innerHTML = `
@@ -750,14 +800,13 @@ function renderSBASection(sbaEl, sbaEligibility, mode, data) {
       <div class="sba-nudge">💡 Want a full SBA eligibility breakdown? <strong>Switch to Advanced DSCR mode</strong> above — it checks your profile against SBA 7(a), SBA 504, and SBA Microloan requirements using your actual financial data.</div>`;
   }
 }
-
+ 
 // ============================================
 // RENDER RESULTS
 // ============================================
 function renderResults(score, verdict, explanation, affiliates, dscrDisplay, recap, data, sbaEligibility, dscr) {
   document.getElementById('resultsState').style.display = 'block';
-
-  // DSCR Card
+ 
   const dscrCard = document.getElementById('dscrCard');
   if (dscrDisplay) {
     dscrCard.style.display = 'block';
@@ -768,19 +817,16 @@ function renderResults(score, verdict, explanation, affiliates, dscrDisplay, rec
       document.getElementById('dscrBand'+i).className = 'dscr-band'+(i===dscrDisplay.activeBand?' active-band':'');
     }
   } else { dscrCard.style.display='none'; }
-
-  // Answer Recap
+ 
   const recapEl = document.getElementById('answerRecap');
   if (recapEl && recap && recap.length) {
     recapEl.style.display = 'flex';
     recapEl.innerHTML = '<span class="recap-label">Based on:</span> ' + recap.map(r=>`<span class="recap-item">${r}</span>`).join('');
   } else if (recapEl) { recapEl.style.display='none'; }
-
-  // SBA Section
+ 
   const sbaEl = document.getElementById('sbaGuidance');
   renderSBASection(sbaEl, sbaEligibility, currentMode, data);
-
-  // Score ring
+ 
   const scoreEl  = document.getElementById('scoreNumber');
   const circleEl = document.getElementById('scoreCircle');
   const circ = 339.3;
@@ -796,23 +842,20 @@ function renderResults(score, verdict, explanation, affiliates, dscrDisplay, rec
     else                circleEl.style.stroke='#E05252';
     if (cur >= score) clearInterval(counter);
   }, 16);
-
-  // Verdict
+ 
   const verdictEl = document.getElementById('scoreVerdict');
   verdictEl.textContent = verdict.text;
   verdictEl.className   = 'score-verdict ' + verdict.css;
-
-  // AI Breakdown
+ 
   document.getElementById('breakdownContent').textContent = explanation;
-
-  // Affiliate Links
+ 
   document.getElementById('affiliateLinks').innerHTML = affiliates.map(a=>`
     <a href="${a.url}" target="_blank" rel="noopener sponsored" class="affiliate-link">
       <div><div class="affiliate-name">${a.name}</div><div class="affiliate-desc">${a.desc}</div></div>
       <div class="affiliate-cta">${a.cta}</div>
     </a>`).join('');
 }
-
+ 
 // ============================================
 // RESTART
 // ============================================
@@ -840,7 +883,7 @@ function restartForm() {
     updateAdvProgress(1);
   }
 }
-
+ 
 // ============================================
 // FAQ TOGGLE
 // ============================================
@@ -848,5 +891,5 @@ function toggleFaq(btn) {
   btn.nextElementSibling.classList.toggle('open');
   btn.classList.toggle('open');
 }
-
+ 
 document.addEventListener('change', e => { if(e.target.type==='radio'){} });
