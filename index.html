@@ -138,7 +138,9 @@
               <label class="option-card"><input type="radio" name="revenue" value="50k_150k" /><span>$50,000 – $150,000</span></label>
               <label class="option-card"><input type="radio" name="revenue" value="150k_500k" /><span>$150,000 – $500,000</span></label>
               <label class="option-card"><input type="radio" name="revenue" value="500k_1m" /><span>$500,000 – $1,000,000</span></label>
-              <label class="option-card"><input type="radio" name="revenue" value="over1m" /><span>Over $1,000,000</span></label>
+              <label class="option-card"><input type="radio" name="revenue" value="1m_2_5m" /><span>$1,000,000 – $2,500,000</span></label>
+              <label class="option-card"><input type="radio" name="revenue" value="2_5m_5m" /><span>$2,500,000 – $5,000,000</span></label>
+              <label class="option-card"><input type="radio" name="revenue" value="over5m" /><span>Over $5,000,000</span></label>
             </div>
             <div class="step-nav"><button type="button" class="btn-next" onclick="nextStep(1)">Next →</button></div>
           </div>
@@ -327,13 +329,13 @@
             <div class="adv-intro">💡 <strong>DSCR (Debt Service Coverage Ratio)</strong> is the single most important metric commercial lenders use. It measures whether your income can cover your debt payments.</div>
             <div class="input-group">
               <label class="input-group-label">EBITDA — Annual</label>
-              <div class="dollar-input"><input type="number" id="adv_ebitda" placeholder="0" min="0" /></div>
+              <div class="dollar-input"><input type="text" inputmode="numeric" id="adv_ebitda" placeholder="0" autocomplete="off" data-money="1" /></div>
               <p class="input-hint">Earnings Before Interest, Taxes, Depreciation &amp; Amortization. Most accurate for DSCR.</p>
             </div>
             <div class="or-divider">or</div>
             <div class="input-group">
               <label class="input-group-label">Net Income YTD</label>
-              <div class="dollar-input"><input type="number" id="adv_netIncome" placeholder="0" min="0" /></div>
+              <div class="dollar-input"><input type="text" inputmode="numeric" id="adv_netIncome" placeholder="0" autocomplete="off" data-money="1" /></div>
               <p class="input-hint">We'll annualize based on months elapsed. Enter at least one field above.</p>
             </div>
             <div class="step-nav"><button type="button" class="btn-next" onclick="nextAdvStep(1)">Next →</button></div>
@@ -346,12 +348,12 @@
             <div class="input-row">
               <div class="input-group">
                 <label class="input-group-label">Avg Monthly Revenue</label>
-                <div class="dollar-input"><input type="number" id="adv_monthlyRevenue" placeholder="0" min="0" /></div>
+                <div class="dollar-input"><input type="text" inputmode="numeric" id="adv_monthlyRevenue" placeholder="0" autocomplete="off" data-money="1" /></div>
                 <p class="input-hint">Average your last 3 months of gross revenue.</p>
               </div>
               <div class="input-group">
                 <label class="input-group-label">Monthly Debt Obligations</label>
-                <div class="dollar-input"><input type="number" id="adv_monthlyDebt" placeholder="0" min="0" /></div>
+                <div class="dollar-input"><input type="text" inputmode="numeric" id="adv_monthlyDebt" placeholder="0" autocomplete="off" data-money="1" /></div>
                 <p class="input-hint">All loan, MCA &amp; line of credit payments. Enter 0 if none.</p>
               </div>
             </div>

@@ -97,11 +97,11 @@ function updateProgress(step) {
 function nextAdvStep(step) {
   const stepEl = document.querySelector(`[data-adv-step="${step}"]`);
   if (step === 1) {
-    const ebitda    = parseFloat(document.getElementById('adv_ebitda').value)    || 0;
-    const netIncome = parseFloat(document.getElementById('adv_netIncome').value) || 0;
+    const ebitda    = readMoney('adv_ebitda');
+    const netIncome = readMoney('adv_netIncome');
     if (ebitda === 0 && netIncome === 0) { shakeStep(stepEl); return; }
   } else if (step === 2) {
-    const rev = parseFloat(document.getElementById('adv_monthlyRevenue').value);
+    const rev = readMoney('adv_monthlyRevenue');
     if (!rev || rev <= 0) { shakeStep(stepEl); return; }
   } else {
     const selected = stepEl.querySelector('input[type="radio"]:checked');
@@ -155,7 +155,7 @@ const loanPurposeMap = {
 // ANSWER LABEL MAP
 // ============================================
 const answerLabels = {
-  'under50k':'Under $50K rev','50k_150k':'$50K–$150K rev','150k_500k':'$150K–$500K rev','500k_1m':'$500K–$1M rev','over1m':'Over $1M rev',
+  'under50k':'Under $50K rev','50k_150k':'$50K–$150K rev','150k_500k':'$150K–$500K rev','500k_1m':'$500K–$1M rev','1m_2_5m':'$1M–$2.5M rev','2_5m_5m':'$2.5M–$5M rev','over5m':'Over $5M rev',
   'under12mo':'Under 12 months','1yr_2yr':'1–2 years','2yr_5yr':'2–5 years','5yr_10yr':'5–10 years','over10yr':'10+ years',
   'under580':'Credit <580','581_630':'Credit 581–630','631_680':'Credit 631–680','681_720':'Credit 681–720','721_780':'Credit 721–780','780plus':'Credit 780+',
   'none':'No debt','under50k_debt':'Debt <$50K','50k_250k_debt':'Debt $50K–$250K','250k_500k_debt':'Debt $250K–$500K','500k_1m_debt':'Debt $500K–$1M','over1m_debt':'Debt >$1M',
@@ -194,7 +194,9 @@ function calculateScore(data) {
     '50k_150k':  { pts: 10, label: '$50K–$150K revenue opens the door to alternative and online lenders.' },
     '150k_500k': { pts: 15, label: '$150K–$500K revenue qualifies you for a wide range of business loan products.' },
     '500k_1m':   { pts: 18, label: '$500K–$1M revenue is strong — you qualify for SBA and bank term loans.' },
-    'over1m':    { pts: 20, label: 'Over $1M revenue puts you in the best borrower tier for nearly all products.' }
+    '1m_2_5m':   { pts: 20, label: '$1M–$2.5M revenue puts you in the core SBA 7(a) and bank term loan market.' },
+    '2_5m_5m':   { pts: 20, label: '$2.5M–$5M revenue is strong for SBA and opens conventional bank credit on better terms.' },
+    'over5m':    { pts: 20, label: 'Over $5M revenue is solidly bankable. Confirm your NAICS size standard with your lender, since receipts-based standards start around $9M and SBA eligibility is industry specific.' }
   };
   const rev = revMap[data.revenue] || { pts: 0, label: 'Revenue not recognized.' };
   score += rev.pts;
@@ -410,7 +412,8 @@ function calculateSBAEligibility(data, dscr, mode) {
   if (mode === 'advanced') {
     annualRevenue = (parseFloat(data.monthlyRevenue) || 0) * 12;
   } else {
-    const revMap = { 'under50k':25000, '50k_150k':100000, '150k_500k':325000, '500k_1m':750000, 'over1m':1500000 };
+    const revMap = { 'under50k':25000, '50k_150k':100000, '150k_500k':325000, '500k_1m':750000,
+                     '1m_2_5m':1750000, '2_5m_5m':3750000, 'over5m':5000000 };
     annualRevenue = revMap[data.revenue] || 0;
   }
  
@@ -504,7 +507,7 @@ function getAffiliateLinks(score, data) {
  
   const sbTime    = ['2yr_5yr','5yr_10yr','over10yr'].includes(data.timeInBusiness);
   const sbCredit  = ['681_720','721_780','780plus'].includes(data.creditScore);
-  const sbRevSimple = ['150k_500k','500k_1m','over1m'].includes(data.revenue);
+  const sbRevSimple = ['150k_500k','500k_1m','1m_2_5m','2_5m_5m','over5m'].includes(data.revenue);
   const sbRevAdv    = data.monthlyRevenue && (parseFloat(data.monthlyRevenue) * 12) >= 250000;
   const sbRevenue   = sbRevSimple || sbRevAdv;
   const sbIndustry  = !['realestate','construction','transportation'].includes(data.industry);
@@ -634,10 +637,10 @@ async function submitAdvForm() {
   const stepEl = document.querySelector(`[data-adv-step="7"]`);
   const selected = stepEl.querySelector('input[type="radio"]:checked');
   if (!selected) { shakeStep(stepEl); return; }
-  const ebitda         = parseFloat(document.getElementById('adv_ebitda').value)         || 0;
-  const netIncome      = parseFloat(document.getElementById('adv_netIncome').value)      || 0;
-  const monthlyRevenue = parseFloat(document.getElementById('adv_monthlyRevenue').value) || 0;
-  const monthlyDebt    = parseFloat(document.getElementById('adv_monthlyDebt').value)    || 0;
+  const ebitda         = readMoney('adv_ebitda');
+  const netIncome      = readMoney('adv_netIncome');
+  const monthlyRevenue = readMoney('adv_monthlyRevenue') || 0;
+  const monthlyDebt    = readMoney('adv_monthlyDebt');
   const advForm = document.getElementById('advForm');
   const data = {
     ebitda, netIncome, monthlyRevenue, monthlyDebt,
@@ -893,3 +896,64 @@ function toggleFaq(btn) {
 }
  
 document.addEventListener('change', e => { if(e.target.type==='radio'){} });
+
+
+// ============================================
+// DOLLAR INPUTS — live comma formatting
+// ============================================
+// These four fields are type="text" on purpose. A number input will not accept
+// a comma, so formatting as you type is impossible there. Because the field can
+// now contain separators, EVERY read of it must go through readMoney() —
+// parseFloat("1,250,000") returns 1, which would silently wreck the scoring.
+
+const MONEY_FIELDS = ['adv_ebitda', 'adv_netIncome', 'adv_monthlyRevenue', 'adv_monthlyDebt'];
+
+// Whole dollars only. Cents are dropped rather than concatenated, otherwise
+// "1250000.50" would read as 125,000,050 — a 100x error.
+function moneyDigits(str) {
+  const cleaned = String(str == null ? '' : str).replace(/[^0-9.]/g, '');
+  return cleaned.split('.')[0].replace(/[^0-9]/g, '');
+}
+
+function readMoney(id) {
+  const el = document.getElementById(id);
+  if (!el) return 0;
+  const d = moneyDigits(el.value);
+  return d ? parseInt(d, 10) : 0;
+}
+
+function formatMoneyInput(el) {
+  const raw = el.value;
+  const caret = el.selectionStart === null ? raw.length : el.selectionStart;
+  const digitsLeftOfCaret = moneyDigits(raw.slice(0, caret)).length;
+
+  const digits = moneyDigits(raw);
+  const formatted = digits ? Number(digits).toLocaleString('en-US') : '';
+  if (formatted === raw) return;
+
+  el.value = formatted;
+
+  // put the caret back after the same number of digits it was behind before
+  let pos = 0, seen = 0;
+  while (pos < formatted.length && seen < digitsLeftOfCaret) {
+    if (formatted.charCodeAt(pos) >= 48 && formatted.charCodeAt(pos) <= 57) seen++;
+    pos++;
+  }
+  try { el.setSelectionRange(pos, pos); } catch (e) { /* not all inputs support it */ }
+}
+
+function initMoneyInputs() {
+  MONEY_FIELDS.forEach(function (id) {
+    const el = document.getElementById(id);
+    if (!el || el.dataset.moneyBound) return;
+    el.dataset.moneyBound = '1';
+    el.addEventListener('input', function () { formatMoneyInput(el); });
+    el.addEventListener('blur',  function () { formatMoneyInput(el); });
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initMoneyInputs);
+} else {
+  initMoneyInputs();
+}
