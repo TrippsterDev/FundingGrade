@@ -94,15 +94,43 @@ function updateProgress(step) {
 // ============================================
 // ADVANCED MODE — NAVIGATION
 // ============================================
+function clearStepError(stepEl) {
+  const existing = stepEl && stepEl.querySelector('.step-error');
+  if (existing) existing.remove();
+}
+
+function failStep(stepEl, msg) {
+  clearStepError(stepEl);
+  const d = document.createElement('div');
+  d.className = 'step-error';
+  d.setAttribute('role', 'alert');
+  d.textContent = msg;
+  const nav = stepEl.querySelector('.step-nav');
+  if (nav) { stepEl.insertBefore(d, nav); } else { stepEl.appendChild(d); }
+  shakeStep(stepEl);
+  return false;
+}
+
 function nextAdvStep(step) {
   const stepEl = document.querySelector(`[data-adv-step="${step}"]`);
+  clearStepError(stepEl);
   if (step === 1) {
-    const ebitda    = readMoney('adv_ebitda');
-    const netIncome = readMoney('adv_netIncome');
-    if (ebitda === 0 && netIncome === 0) { shakeStep(stepEl); return; }
+    if (moneyIsBlank('adv_ebitda') && moneyIsBlank('adv_netIncome')) {
+      return failStep(stepEl, 'Enter either EBITDA or Net Income YTD to continue.');
+    }
+    if (readMoney('adv_ebitda') === 0 && readMoney('adv_netIncome') === 0) {
+      return failStep(stepEl, 'Income cannot be zero. Enter your annual EBITDA, or your net income year to date.');
+    }
   } else if (step === 2) {
-    const rev = readMoney('adv_monthlyRevenue');
-    if (!rev || rev <= 0) { shakeStep(stepEl); return; }
+    if (moneyIsBlank('adv_monthlyRevenue')) {
+      return failStep(stepEl, 'Enter your average monthly revenue to continue.');
+    }
+    if (readMoney('adv_monthlyRevenue') <= 0) {
+      return failStep(stepEl, 'Monthly revenue has to be greater than zero.');
+    }
+    if (moneyIsBlank('adv_monthlyDebt') && !noDebtChecked()) {
+      return failStep(stepEl, 'Enter your monthly debt obligations, or tick the box below the field if you have none.');
+    }
   } else {
     const selected = stepEl.querySelector('input[type="radio"]:checked');
     if (!selected) { shakeStep(stepEl); return; }
@@ -313,7 +341,7 @@ function calculateDSCR(ebitda, netIncomeYTD, monthlyDebt) {
   return annualIncome / annualDebtService;
 }
 function getDSCRDisplay(dscr) {
-  if (dscr === null) return { ratio:'N/A', cssClass:'dscr--none',     meaning:'No existing debt detected. DSCR not applicable — lenders will focus on revenue strength and cash flow.', activeBand:-1 };
+  if (dscr === null) return { ratio:'No debt', cssClass:'dscr--none',     meaning:'You carry no existing debt service, so every dollar of income is available to cover a new loan payment. That is the strongest possible starting position on coverage. A lender will still want to see how the new payment fits, and will note that a business with no borrowing history has no repayment track record to point to.', activeBand:-1 };
   if (dscr >= 1.5)  return { ratio:dscr.toFixed(2)+'x', cssClass:'dscr--strong',   meaning:`Strong. For every $1.00 of annual debt service, you generate $${dscr.toFixed(2)} in income. Most lenders require 1.25x minimum.`, activeBand:3 };
   if (dscr >= 1.25) return { ratio:dscr.toFixed(2)+'x', cssClass:'dscr--good',     meaning:`Good. You meet most lender DSCR minimums with an adequate buffer. 1.25x is the conventional floor for most bank and SBA products.`, activeBand:2 };
   if (dscr >= 1.0)  return { ratio:dscr.toFixed(2)+'x', cssClass:'dscr--tight',    meaning:`Tight. Your income covers debt payments but barely. Most conventional lenders will hesitate — strong compensating factors required.`, activeBand:1 };
@@ -328,7 +356,7 @@ function calculateAdvancedScore(data, dscr) {
   const factors = [];
  
   let dscrPts, dscrNote;
-  if (dscr === null)    { dscrPts=20; dscrNote='No existing debt — DSCR not applicable. Lenders will evaluate revenue and cash flow directly.'; }
+  if (dscr === null)    { dscrPts=36; dscrNote='No existing debt service, so all income is available to cover a new loan payment. Scored near the top of this factor. Held just short of full marks because a business that has never carried debt has no repayment history for a lender to review.'; }
   else if (dscr >= 1.5) { dscrPts=40; dscrNote=`DSCR of ${dscr.toFixed(2)}x is excellent — strong coverage well above the 1.25x lender minimum.`; }
   else if (dscr >= 1.25){ dscrPts=32; dscrNote=`DSCR of ${dscr.toFixed(2)}x meets most lender minimums with adequate buffer.`; }
   else if (dscr >= 1.15){ dscrPts=22; dscrNote=`DSCR of ${dscr.toFixed(2)}x is below preferred levels. Some lenders will accept with strong compensating factors.`; }
@@ -724,7 +752,7 @@ Do not use bullet points. Warm but professional advisor tone. Address them as "y
 // ============================================
 async function getAdvancedAIExplanation(data, score, factors, verdict, dscr, dscrDisplay) {
   const factorText = factors.filter(f=>f.pts!==null).map(f=>`- ${f.label}: ${f.pts}/${f.max} pts — ${f.note}`).join('\n');
-  const dscrText   = dscr === null ? 'No existing debt (DSCR not applicable)' : `DSCR: ${dscr.toFixed(2)}x — ${dscrDisplay.meaning}`;
+  const dscrText   = dscr === null ? 'No existing debt service. All income is available to cover a new payment.' : `DSCR: ${dscr.toFixed(2)}x — ${dscrDisplay.meaning}`;
   const incomeText = data.ebitda > 0 ? `EBITDA: ${formatCurrency(data.ebitda)}` : `Net Income YTD: ${formatCurrency(data.netIncome)} (annualized)`;
   const purpose    = loanPurposeMap[data.loanPurpose];
   const prompt = `You are a plain-English commercial lending advisor. A business owner completed an advanced loan readiness assessment.
@@ -922,6 +950,19 @@ function readMoney(id) {
   return d ? parseInt(d, 10) : 0;
 }
 
+// An empty field and a deliberately typed 0 are different answers, but
+// readMoney() flattens both to 0. Validation has to look at the raw input.
+function moneyIsBlank(id) {
+  const el = document.getElementById(id);
+  if (!el) return true;
+  return moneyDigits(el.value).length === 0;
+}
+
+function noDebtChecked() {
+  const cb = document.getElementById('adv_noDebt');
+  return !!(cb && cb.checked);
+}
+
 function formatMoneyInput(el) {
   const raw = el.value;
   const caret = el.selectionStart === null ? raw.length : el.selectionStart;
@@ -949,6 +990,33 @@ function initMoneyInputs() {
     el.dataset.moneyBound = '1';
     el.addEventListener('input', function () { formatMoneyInput(el); });
     el.addEventListener('blur',  function () { formatMoneyInput(el); });
+  });
+  initNoDebtToggle();
+}
+
+// Checking the box IS the answer for the debt field: it sets a real zero and
+// locks the input, so "no debt" can never be confused with "skipped this".
+function initNoDebtToggle() {
+  const cb = document.getElementById('adv_noDebt');
+  const input = document.getElementById('adv_monthlyDebt');
+  if (!cb || !input || cb.dataset.noDebtBound) return;
+  cb.dataset.noDebtBound = '1';
+  cb.addEventListener('change', function () {
+    if (cb.checked) {
+      input.value = '0';
+      input.disabled = true;
+      input.classList.add('is-zeroed');
+    } else {
+      input.disabled = false;
+      input.classList.remove('is-zeroed');
+      input.value = '';
+      input.focus();
+    }
+    const stepEl = input.closest('[data-adv-step]');
+    if (stepEl) clearStepError(stepEl);
+  });
+  input.addEventListener('input', function () {
+    if (cb.checked) { cb.checked = false; input.classList.remove('is-zeroed'); }
   });
 }
 

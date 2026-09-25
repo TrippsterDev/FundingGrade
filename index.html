@@ -43,6 +43,12 @@
     .dollar-input input{width:100%;padding:13px 14px 13px 28px;border:1.5px solid #e5e0d8;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:1rem;color:#1a1a1a;background:#fafaf8;transition:border-color .2s,box-shadow .2s;box-sizing:border-box;-moz-appearance:textfield}
     .dollar-input input::-webkit-outer-spin-button,.dollar-input input::-webkit-inner-spin-button{-webkit-appearance:none}
     .dollar-input input:focus{outline:none;border-color:#C9A84C;background:white;box-shadow:0 0 0 3px rgba(201,168,76,.12)}
+    .step-error{background:#fdf3f2;border:1px solid #e9c4c0;border-left:3px solid #c0564b;border-radius:8px;padding:11px 14px;margin:16px 0 4px;font-family:'IBM Plex Sans',sans-serif;font-size:.82rem;line-height:1.45;color:#8c3a31}
+    .no-debt-check{display:flex;align-items:center;gap:9px;margin-top:11px;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-size:.82rem;color:#c3c8d2;user-select:none}
+    .no-debt-check input[type="checkbox"]{width:16px;height:16px;margin:0;flex:0 0 auto;accent-color:#C9A84C;cursor:pointer}
+    .no-debt-check:hover span{color:#fff}
+    .no-debt-check input:checked ~ span{color:var(--gold,#C9A84C);font-weight:600}
+    .dollar-input input.is-zeroed{color:#999;background:#f2f1ed}
     .or-divider{text-align:center;color:#ccc;font-size:.7rem;font-family:'IBM Plex Sans',sans-serif;margin:14px 0;position:relative;letter-spacing:.08em;text-transform:uppercase}
     .or-divider::before,.or-divider::after{content:'';position:absolute;top:50%;width:44%;height:1px;background:#ece8e0}
     .or-divider::before{left:0}.or-divider::after{right:0}
@@ -329,13 +335,13 @@
             <div class="adv-intro">💡 <strong>DSCR (Debt Service Coverage Ratio)</strong> is the single most important metric commercial lenders use. It measures whether your income can cover your debt payments.</div>
             <div class="input-group">
               <label class="input-group-label">EBITDA — Annual</label>
-              <div class="dollar-input"><input type="text" inputmode="numeric" id="adv_ebitda" placeholder="0" autocomplete="off" data-money="1" /></div>
+              <div class="dollar-input"><input type="text" inputmode="numeric" id="adv_ebitda" placeholder="Annual total" autocomplete="off" data-money="1" /></div>
               <p class="input-hint">Earnings Before Interest, Taxes, Depreciation &amp; Amortization. Most accurate for DSCR.</p>
             </div>
             <div class="or-divider">or</div>
             <div class="input-group">
               <label class="input-group-label">Net Income YTD</label>
-              <div class="dollar-input"><input type="text" inputmode="numeric" id="adv_netIncome" placeholder="0" autocomplete="off" data-money="1" /></div>
+              <div class="dollar-input"><input type="text" inputmode="numeric" id="adv_netIncome" placeholder="Year to date" autocomplete="off" data-money="1" /></div>
               <p class="input-hint">We'll annualize based on months elapsed. Enter at least one field above.</p>
             </div>
             <div class="step-nav"><button type="button" class="btn-next" onclick="nextAdvStep(1)">Next →</button></div>
@@ -348,13 +354,14 @@
             <div class="input-row">
               <div class="input-group">
                 <label class="input-group-label">Avg Monthly Revenue</label>
-                <div class="dollar-input"><input type="text" inputmode="numeric" id="adv_monthlyRevenue" placeholder="0" autocomplete="off" data-money="1" /></div>
+                <div class="dollar-input"><input type="text" inputmode="numeric" id="adv_monthlyRevenue" placeholder="Monthly average" autocomplete="off" data-money="1" /></div>
                 <p class="input-hint">Average your last 3 months of gross revenue.</p>
               </div>
               <div class="input-group">
                 <label class="input-group-label">Monthly Debt Obligations</label>
-                <div class="dollar-input"><input type="text" inputmode="numeric" id="adv_monthlyDebt" placeholder="0" autocomplete="off" data-money="1" /></div>
-                <p class="input-hint">All loan, MCA &amp; line of credit payments. Enter 0 if none.</p>
+                <div class="dollar-input"><input type="text" inputmode="numeric" id="adv_monthlyDebt" placeholder="Monthly total" autocomplete="off" data-money="1" /></div>
+                <label class="no-debt-check"><input type="checkbox" id="adv_noDebt" /><span>I currently have no debt payments</span></label>
+                <p class="input-hint">All loan, MCA &amp; line of credit payments.</p>
               </div>
             </div>
             <div class="step-nav">
