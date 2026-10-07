@@ -575,6 +575,15 @@ function getAffiliateLinks(score, data) {
     links.push({ name:'Fundbox', desc:'Flexible credit lines for businesses building their credit profile.', url:'https://fundbox.com/?ref=fundingrade', cta:'Explore Options →' });
   }
   links.push({ name:'Nav', desc:'Free business credit monitoring + matched financing options. A smart first step.', url:'https://nav.nkwcmr.net/c/7254877/1813107/2410', cta:'Check Free →' });
+
+  // Partners with a live, trackable referral link lead the list. Lendio, Bluevine
+  // and Fundbox are currently plain homepage links with an unregistered ?ref=
+  // parameter, so they earn nothing and must not hold the top slot. Add a name to
+  // PAYING once that program is actually approved and the URL is swapped.
+  const PAYING = ['SmartBiz', 'Nav'];
+  links.sort(function (a, b) {
+    return (PAYING.indexOf(b.name) > -1 ? 1 : 0) - (PAYING.indexOf(a.name) > -1 ? 1 : 0);
+  });
   return links;
 }
  
