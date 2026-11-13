@@ -116,7 +116,7 @@ Be direct, specific, and honest. Do not promise approval or quote rates. Do not 
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'x-api-key': (process.env.ANTHROPIC_API_KEY || '').trim().replace(/^["']|["']$/g, ''),
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
@@ -132,7 +132,7 @@ Be direct, specific, and honest. Do not promise approval or quote rates. Do not 
       // TEMP DEBUG (preview only, remove before merge)
       if (isPreview) {
         let type = ''; try { type = (JSON.parse(detail).error || {}).type || ''; } catch (e) {}
-        return { statusCode: 502, body: JSON.stringify({ error: 'AI service unavailable', upstream: response.status, type, keySet: !!process.env.ANTHROPIC_API_KEY }) };
+        return { statusCode: 502, body: JSON.stringify({ error: 'AI service unavailable', upstream: response.status, type, keySet: !!process.env.ANTHROPIC_API_KEY, keyLooksRight: /^\s*["']?sk-ant-/.test(process.env.ANTHROPIC_API_KEY || ''), keyLen: (process.env.ANTHROPIC_API_KEY || '').length }) };
       }
       return bad(502, 'AI service unavailable');
     }
