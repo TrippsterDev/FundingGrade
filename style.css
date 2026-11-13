@@ -712,3 +712,19 @@ body {
   .header-nav { display: none; }
   .hero { padding: 48px 0 40px; }
 }
+
+/* ---- Docs That Close template box (articles) ---- */
+.dtc-box { background: var(--navy-light); border: 1px solid rgba(201,168,76,0.35); border-left: 4px solid var(--gold); border-radius: 14px; padding: 28px 30px; margin: 0 0 48px; }
+.dtc-eyebrow { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin: 0 0 8px; }
+.dtc-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 600; color: var(--white); margin: 0 0 10px; }
+.dtc-desc { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.88rem; color: var(--white-dim); line-height: 1.6; margin: 0 0 18px; }
+.dtc-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.dtc-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--navy); border: 1px solid rgba(255,255,255,0.08); border-radius: 9px; padding: 13px 16px; text-decoration: none; transition: border-color .2s; }
+.dtc-item:hover { border-color: var(--gold); }
+.dtc-name { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--white); }
+.dtc-price { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--gold); white-space: nowrap; }
+.dtc-note { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.75rem; color: var(--white-dim); margin: 0; }
+.dtc-note a { color: var(--gold); text-decoration: none; }
+@media (max-width: 768px) { .dtc-box { padding: 22px 18px; } }
+.dtc-box p.dtc-eyebrow { color: var(--gold); }
+.dtc-box h3 { margin-top: 0 !important; }
