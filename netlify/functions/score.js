@@ -14,26 +14,27 @@ const FACTOR_LABELS = new Set([
   'Debt Service Coverage Ratio (DSCR)', 'Monthly Revenue'
 ]);
 
-const PURPOSES = new Set([
-  'Working Capital', 'Equipment Purchase', 'Real Estate',
-  'Business Expansion or Purchase', 'Refinance Existing Debt'
-]);
+// Purpose keys and the SBA guidance the AI is given for each. Kept here so no
+// free text from the browser ever reaches the prompt.
+const PURPOSES = {
+  working_capital: { label: 'Working Capital', sba: 'SBA 7(a) is the usual SBA fit for working capital; CAPLines are the revolving option.' },
+  equipment:       { label: 'Equipment Purchase', sba: 'SBA 7(a) or SBA 504 can finance equipment with long repayment terms.' },
+  real_estate:     { label: 'Real Estate', sba: 'SBA 504 is often the best fit for owner-occupied commercial real estate; SBA 7(a) can also finance real estate.' },
+  expansion:       { label: 'Business Expansion or Purchase', sba: 'SBA 7(a) covers acquisitions and expansions; SBA 504 can fund expansions that are real estate or long-term equipment.' },
+  refinance:       { label: 'Refinance Existing Debt', sba: 'SBA 7(a) can refinance eligible business debt, and SBA 504 can refinance debt on owner-occupied real estate and equipment.' }
+};
 
-const VERDICTS = new Set([
-  '✦ Strong Candidate', '◈ Promising — Minor Gaps', '◇ Needs Work', '△ Not Ready Yet'
-]);
+function verdictFor(score) {
+  if (score >= 80) return 'Strong Candidate';
+  if (score >= 60) return 'Promising, with minor gaps';
+  if (score >= 40) return 'Needs Work';
+  return 'Not Ready Yet';
+}
 
-const MAX_BODY = 6000;     // bytes
-const MAX_NOTE = 400;      // characters per factor note
-const MAX_SBA  = 400;      // characters of SBA guidance text
+const MAX_BODY = 4000;     // characters
 
 function bad(code, msg) {
   return { statusCode: code, body: JSON.stringify({ error: msg }) };
-}
-
-function cleanText(s, max) {
-  if (typeof s !== 'string') return '';
-  return s.replace(/[\u0000-\u001f\u007f]/g, ' ').slice(0, max);
 }
 
 function money(n) {
@@ -44,7 +45,7 @@ exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return bad(405, 'Method not allowed');
 
   const origin = (event.headers && (event.headers.origin || event.headers.Origin)) || '';
-  const isPreview = /^https:\/\/[a-z0-9-]+--[a-z0-9-]+\.netlify\.app$/i.test(origin);
+  const isPreview = /^https:\/\/deploy-preview-\d+--radiant-taffy-da9955\.netlify\.app$/.test(origin);
   if (!ALLOWED_ORIGINS.includes(origin) && !isPreview) return bad(403, 'Forbidden');
 
   if (!event.body || event.body.length > MAX_BODY) return bad(413, 'Request too large');
@@ -55,11 +56,12 @@ exports.handler = async (event) => {
   const mode = b.mode === 'advanced' ? 'advanced' : (b.mode === 'simple' ? 'simple' : null);
   if (!mode) return bad(400, 'Invalid mode');
 
-  const score = Number(b.score);
-  if (!Number.isInteger(score) || score < 0 || score > 100) return bad(400, 'Invalid score');
-  if (!VERDICTS.has(b.verdict)) return bad(400, 'Invalid verdict');
-  const purpose = PURPOSES.has(b.purpose) ? b.purpose : 'Not specified';
-  const sba = cleanText(b.sba, MAX_SBA);
+  let score = Number(b.score);
+  if (!Number.isFinite(score) || score < 0 || score > 150) return bad(400, 'Invalid score');
+  score = Math.min(100, Math.round(score));
+  const p = PURPOSES[b.purpose];
+  const purpose = p ? p.label : 'Not specified';
+  const sba = p ? p.sba : '';
 
   if (!Array.isArray(b.factors) || b.factors.length < 3 || b.factors.length > 12) return bad(400, 'Invalid factors');
   const lines = [];
@@ -67,18 +69,19 @@ exports.handler = async (event) => {
     if (!f || !FACTOR_LABELS.has(f.label)) return bad(400, 'Invalid factor');
     const pts = Number(f.pts), max = Number(f.max);
     if (!Number.isFinite(pts) || !Number.isFinite(max) || pts < 0 || max <= 0 || max > 40 || pts > max) return bad(400, 'Invalid factor');
-    lines.push(`- ${f.label}: ${pts}/${max} pts. ${cleanText(f.note, MAX_NOTE)}`);
+    lines.push(`- ${f.label}: ${pts} of ${max} points`);
   }
 
   let extra = '';
   if (mode === 'advanced') {
-    const dscr = b.dscr === null ? null : Number(b.dscr);
-    if (dscr !== null && (!Number.isFinite(dscr) || dscr < -50 || dscr > 1000)) return bad(400, 'Invalid DSCR');
+    let dscr = b.dscr === null ? null : Number(b.dscr);
+    if (dscr !== null && !Number.isFinite(dscr)) return bad(400, 'Invalid DSCR');
+    if (dscr !== null) dscr = Math.max(0, Math.min(dscr, 10));
     const rev = Number(b.monthlyRevenue), debt = Number(b.monthlyDebt);
     if (!Number.isFinite(rev) || rev < 0 || rev > 1e9 || !Number.isFinite(debt) || debt < 0 || debt > 1e9) return bad(400, 'Invalid amounts');
     extra = (dscr === null
       ? 'Existing debt service: none. All income is available to cover a new payment.'
-      : `DSCR on existing debt only (before any new loan): ${dscr.toFixed(2)}x.`) +
+      : `DSCR on existing debt only (before any new loan): ${dscr >= 10 ? '10x or more' : dscr.toFixed(2) + 'x'}.`) +
       `\nAverage monthly revenue: ${money(rev)}\nMonthly debt obligations: ${money(debt)}`;
   }
 
@@ -97,7 +100,7 @@ Paragraph 4 (only if the score is under 70): Give one concrete next step they ca
   const prompt = `You are a plain-English commercial lending educator. A business owner completed ${mode === 'advanced' ? 'an advanced' : 'a'} loan readiness self-assessment on Funding Grade. The score comes from a fixed points table, not a lender decision.
 
 Score: ${score}/100
-Verdict: ${b.verdict}
+Verdict: ${verdictFor(score)}
 Loan purpose: ${purpose}
 ${sba ? `SBA guidance: ${sba}` : ''}
 ${extra}
@@ -124,11 +127,8 @@ Be direct, specific, and honest. Do not promise approval or quote rates. Do not 
     });
 
     if (!response.ok) {
-      const detail = await response.text();
-      console.error('Anthropic API error:', response.status, detail);
-      let type = '';
-      try { type = (JSON.parse(detail).error || {}).type || ''; } catch (e) {}
-      return { statusCode: 502, body: JSON.stringify({ error: 'AI service unavailable', upstream: response.status, type, keySet: !!process.env.ANTHROPIC_API_KEY }) };
+      console.error('Anthropic API error:', response.status, await response.text());
+      return bad(502, 'AI service unavailable');
     }
 
     const data = await response.json();

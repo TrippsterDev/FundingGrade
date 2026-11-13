@@ -326,7 +326,7 @@ function calculateScore(data) {
   const purpose = loanPurposeMap[data.loanPurpose];
   if (purpose) factors.push({ label: 'Loan Purpose', pts: null, max: null, note: `${purpose.label} — ${purpose.sba}` });
  
-  return { score, factors };
+  return { score: Math.min(100, score), factors };
 }
  
 // ============================================
@@ -428,7 +428,7 @@ function calculateAdvancedScore(data, dscr) {
   const purpose = loanPurposeMap[data.loanPurpose];
   if (purpose) factors.push({ label:'Loan Purpose', pts:null, max:null, note:`${purpose.label} — ${purpose.sba}` });
  
-  return { score, factors };
+  return { score: Math.min(100, score), factors };
 }
  
 // ============================================
@@ -484,23 +484,26 @@ function calculateSBAEligibility(data, dscr, mode) {
     { warn: creditMarginal,         msg: '631–680 is workable with some lenders; many prefer 680+' },
     { warn: annualRevenue < 100000, msg: 'Most 7(a) lenders prefer $100K+ in annual revenue (not an SBA rule)' },
     { fail: dscrWeak,               msg: 'DSCR below 1.0x is typically disqualifying for SBA 7(a)' },
-    { warn: dscrMarginal,           msg: 'DSCR under 1.25x on current debt may not leave room for the new payment. SBA requires 1.15x after the new loan (1.10x for loans of $350K or less)' },
+    { warn: dscrMarginal,           msg: 'DSCR under 1.25x on current debt may not leave room for the new payment. SBA requires 1.15x after the new loan (1.10x for 7(a) Small loans of $350K or less, 1.25x for most business purchases)' },
     { fail: noTaxReturns && !timeTooNew, msg: 'SBA 7(a) lenders require at least 1–2 years of business tax returns' },
     { warn: onlyOneTaxReturn,       msg: '1 year of returns is acceptable for some SBA lenders; 2 years preferred' },
   ]);
  
   const purpose504OK = ['real_estate','equipment'].includes(purpose);
   const isRefi        = purpose === 'refinance';
+  const isExpansion   = purpose === 'expansion';
   const sba504 = evalProgram([
-    { fail: !purpose504OK && !isRefi, msg: 'SBA 504 is for owner-occupied real estate, long-term equipment, or refinancing debt on those assets' },
+    { fail: !purpose504OK && !isRefi && !isExpansion, msg: 'SBA 504 is for owner-occupied real estate, long-term equipment, or refinancing debt on those assets' },
+    { warn: isExpansion,            msg: '504 fits an expansion only if it is real estate or long-term equipment, not the purchase of a business' },
     { warn: isRefi,                 msg: '504 can refinance only debt on owner-occupied real estate or long-term equipment' },
-    { fail: isRefi && !timeStrong,  msg: '504 refinancing requires at least 2 years in operation' },
+    { fail: isRefi && !timeStrong,  msg: '504 refinancing without an expansion project requires at least 2 years in operation' },
     { fail: hasTaxLiens,            msg: 'Tax liens must be resolved before applying' },
-    { warn: !isRefi && (timeTooNew || timeMarginal), msg: 'Newer businesses qualify for 504 with a larger down payment: 15%, or 20% for a special-purpose building' },
-    { warn: !creditStrong,          msg: 'SBA has no credit score minimum, but the bank on the 50% portion often wants 680+' },
+    { warn: !isRefi && (timeTooNew || timeMarginal), msg: 'Businesses 2 years old or less qualify for 504 with a larger down payment: 15%, or 20% for a special-purpose building' },
+    { fail: creditWeak,             msg: 'SBA has no credit score minimum, but the bank on the 50% portion will almost always decline scores below about 630' },
+    { warn: creditMarginal,         msg: 'SBA has no credit score minimum, but the bank on the 50% portion often wants 680+' },
     { warn: annualRevenue < 250000, msg: 'Many 504 bank partners prefer $250K+ in annual revenue (not an SBA rule)' },
     { fail: dscrWeak,               msg: 'DSCR below 1.0x on current debt is typically disqualifying' },
-    { warn: dscrMarginal,           msg: 'SBA requires 1.15x historical coverage after the new 504 loan' },
+    { warn: dscrMarginal,           msg: 'SBA requires 1.15x coverage after the new 504 loan, based on history or, if history falls short, projections' },
     { fail: noTaxReturns && !timeTooNew, msg: 'Lenders need business tax returns for an existing business' },
   ]);
  
@@ -553,7 +556,7 @@ function getAffiliateLinks(score, data) {
     links.push({
       name:'Lendio',
       desc: p==='real_estate' ? 'Compare SBA 504 lenders for commercial real estate — one application, 75+ lenders.'
-          : p==='equipment'   ? 'Equipment financing up to $5.5M. Compare SBA 7(a) and 504 options in one application.'
+          : p==='equipment'   ? 'Equipment financing. Compare SBA 7(a) and 504 options in one application.'
           : p==='refinance'   ? 'Refinancing options from 75+ lenders. Compare SBA 7(a) and conventional options.'
           : p==='expansion'   ? 'Business acquisition and expansion financing. Compare 75+ lenders in one application.'
           : 'Compare 75+ lenders with one application. Best for strong profiles.',
@@ -745,23 +748,19 @@ async function requestExplanation(payload) {
 }
 
 function scoredFactors(factors) {
-  return factors.filter(f=>f.pts!==null).map(f=>({ label:f.label, pts:f.pts, max:f.max, note:f.note }));
+  return factors.filter(f=>f.pts!==null).map(f=>({ label:f.label, pts:f.pts, max:f.max }));
 }
 
 async function getAIExplanation(data, score, factors, verdict) {
-  const purpose = loanPurposeMap[data.loanPurpose];
   return requestExplanation({
-    mode: 'simple', score, verdict: verdict.text,
-    purpose: purpose ? purpose.label : '', sba: purpose ? purpose.sba : '',
+    mode: 'simple', score, purpose: data.loanPurpose || '',
     factors: scoredFactors(factors)
   });
 }
 
 async function getAdvancedAIExplanation(data, score, factors, verdict, dscr, dscrDisplay) {
-  const purpose = loanPurposeMap[data.loanPurpose];
   return requestExplanation({
-    mode: 'advanced', score, verdict: verdict.text,
-    purpose: purpose ? purpose.label : '', sba: purpose ? purpose.sba : '',
+    mode: 'advanced', score, purpose: data.loanPurpose || '',
     factors: scoredFactors(factors),
     dscr: dscr === null ? null : Math.round(dscr * 100) / 100,
     monthlyRevenue: Number(data.monthlyRevenue) || 0,
@@ -772,7 +771,7 @@ async function getAdvancedAIExplanation(data, score, factors, verdict, dscr, dsc
 // ============================================
 // RENDER SBA SECTION
 // ============================================
-const SBA_CITIZENSHIP_NOTE = `<div class="sba-elig-note" style="margin-top:12px;color:rgba(255,255,255,.7)">Note: since March 1, 2026, SBA 7(a) and 504 loans require every owner to be a U.S. citizen or U.S. national whose primary home is in the U.S. Green card holders no longer qualify. This tool doesn't ask about citizenship.</div>`;
+const SBA_CITIZENSHIP_NOTE = `<div class="sba-elig-note" style="margin-top:12px;color:rgba(255,255,255,.7)">Note: since March 1, 2026, SBA 7(a) and 504 loans require every owner and SBA-required guarantor to be a U.S. citizen or U.S. national whose primary home is in the U.S. Green card holders no longer qualify. This tool doesn't ask about citizenship.</div>`;
 
 function renderSBASection(sbaEl, sbaEligibility, mode, data) {
   if (!sbaEl) return;
