@@ -173,10 +173,10 @@ document.head.appendChild(shakeStyle);
 // ============================================
 const loanPurposeMap = {
   'working_capital': { label: 'Working Capital',                sba: 'SBA 7(a) — ideal for working capital needs up to $5M with flexible terms.' },
-  'equipment':       { label: 'Equipment Purchase',             sba: 'SBA 7(a) or SBA 504 — equipment financing up to $5.5M with long repayment terms.' },
-  'real_estate':     { label: 'Real Estate',                    sba: 'SBA 504 — best fit for owner-occupied commercial real estate up to $5.5M at fixed rates.' },
+  'equipment':       { label: 'Equipment Purchase',             sba: 'SBA 7(a) or SBA 504: long repayment terms on equipment. 504 lends up to $5M on most projects ($5.5M for small manufacturers).' },
+  'real_estate':     { label: 'Real Estate',                    sba: 'SBA 504 is often the best fit for owner-occupied commercial real estate, with a fixed rate on the SBA portion (up to $5M, or $5.5M for small manufacturers). SBA 7(a) can also finance real estate.' },
   'expansion':       { label: 'Business Expansion or Purchase', sba: 'SBA 7(a) — covers acquisitions, expansions, and business purchases up to $5M.' },
-  'refinance':       { label: 'Refinance Existing Debt',        sba: 'SBA 7(a) — can refinance eligible existing business debt. Note: Merchant cash advances and factoring agreements are not eligible for SBA refinancing.' }
+  'refinance':       { label: 'Refinance Existing Debt',        sba: 'SBA 7(a) can refinance eligible business debt, and SBA 504 can refinance debt on owner-occupied real estate and equipment. Factoring can\'t be refinanced, and a merchant cash advance qualifies only after it has been converted to a term loan and paid on for 24 months.' }
 };
  
 // ============================================
@@ -342,9 +342,9 @@ function calculateDSCR(ebitda, netIncomeYTD, monthlyDebt) {
 }
 function getDSCRDisplay(dscr) {
   if (dscr === null) return { ratio:'No debt', cssClass:'dscr--none',     meaning:'You carry no existing debt service, so every dollar of income is available to cover a new loan payment. That is the strongest possible starting position on coverage. A lender will still want to see how the new payment fits, and will note that a business with no borrowing history has no repayment track record to point to.', activeBand:-1 };
-  if (dscr >= 1.5)  return { ratio:dscr.toFixed(2)+'x', cssClass:'dscr--strong',   meaning:`Strong. For every $1.00 of annual debt service, you generate $${dscr.toFixed(2)} in income. Most lenders require 1.25x minimum.`, activeBand:3 };
-  if (dscr >= 1.25) return { ratio:dscr.toFixed(2)+'x', cssClass:'dscr--good',     meaning:`Good. You meet most lender DSCR minimums with an adequate buffer. 1.25x is the conventional floor for most bank and SBA products.`, activeBand:2 };
-  if (dscr >= 1.0)  return { ratio:dscr.toFixed(2)+'x', cssClass:'dscr--tight',    meaning:`Tight. Your income covers debt payments but barely. Most conventional lenders will hesitate — strong compensating factors required.`, activeBand:1 };
+  if (dscr >= 1.5)  return { ratio:dscr.toFixed(2)+'x', cssClass:'dscr--strong',   meaning:`Strong. For every $1.00 of current annual debt payments, you generate $${dscr.toFixed(2)} in income. That leaves room for a new loan payment.`, activeBand:3 };
+  if (dscr >= 1.25) return { ratio:dscr.toFixed(2)+'x', cssClass:'dscr--good',     meaning:`Good. On current debt you clear the 1.15x SBA floor and the 1.20x to 1.25x many lenders want. Check that you still clear it once the new payment is added.`, activeBand:2 };
+  if (dscr >= 1.0)  return { ratio:dscr.toFixed(2)+'x', cssClass:'dscr--tight',    meaning:`Tight. Your income covers current payments with little room. Most lenders want 1.20x to 1.25x after the new loan, so expect questions or a need for compensating factors.`, activeBand:1 };
   return                   { ratio:dscr.toFixed(2)+'x', cssClass:'dscr--negative', meaning:`Negative. Your current income does not cover existing debt obligations. New financing will be very difficult without first reducing debt.`, activeBand:0 };
 }
  
@@ -357,9 +357,9 @@ function calculateAdvancedScore(data, dscr) {
  
   let dscrPts, dscrNote;
   if (dscr === null)    { dscrPts=36; dscrNote='No existing debt service, so all income is available to cover a new loan payment. Scored near the top of this factor. Held just short of full marks because a business that has never carried debt has no repayment history for a lender to review.'; }
-  else if (dscr >= 1.5) { dscrPts=40; dscrNote=`DSCR of ${dscr.toFixed(2)}x is excellent — strong coverage well above the 1.25x lender minimum.`; }
-  else if (dscr >= 1.25){ dscrPts=32; dscrNote=`DSCR of ${dscr.toFixed(2)}x meets most lender minimums with adequate buffer.`; }
-  else if (dscr >= 1.15){ dscrPts=22; dscrNote=`DSCR of ${dscr.toFixed(2)}x is below preferred levels. Some lenders will accept with strong compensating factors.`; }
+  else if (dscr >= 1.5) { dscrPts=40; dscrNote=`DSCR of ${dscr.toFixed(2)}x on current debt is excellent, well above the 1.15x SBA floor and the 1.20x to 1.25x many lenders want.`; }
+  else if (dscr >= 1.25){ dscrPts=32; dscrNote=`DSCR of ${dscr.toFixed(2)}x on current debt meets most lender targets, with some room for a new payment.`; }
+  else if (dscr >= 1.15){ dscrPts=22; dscrNote=`DSCR of ${dscr.toFixed(2)}x on current debt meets the 1.15x SBA floor but leaves little room for a new payment. Many lenders want 1.20x to 1.25x after the new loan.`; }
   else if (dscr >= 1.0) { dscrPts=12; dscrNote=`DSCR of ${dscr.toFixed(2)}x is tight — income barely covers debt service.`; }
   else                  { dscrPts=0;  dscrNote=`DSCR of ${dscr.toFixed(2)}x is negative — income does not cover existing debt payments.`; }
   score += dscrPts;
@@ -478,26 +478,30 @@ function calculateSBAEligibility(data, dscr, mode) {
  
   const sba7a = evalProgram([
     { fail: hasTaxLiens,            msg: 'Tax liens must be resolved before applying' },
-    { fail: timeTooNew,             msg: 'Under 12 months is below most SBA lender minimums' },
-    { warn: timeMarginal,           msg: '1–2 years is marginal; 2+ years preferred by most SBA 7(a) lenders' },
-    { fail: creditWeak,             msg: 'Credit score below 631 typically disqualifies for SBA 7(a)' },
-    { warn: creditMarginal,         msg: '631–680 is marginal; 681+ preferred for SBA 7(a)' },
-    { fail: annualRevenue < 100000, msg: '$100K+ annual revenue required by most SBA 7(a) lenders' },
+    { warn: timeTooNew,             msg: 'SBA allows startups with at least a 10% equity injection, but most lenders prefer 2+ years in business' },
+    { warn: timeMarginal,           msg: '1–2 years works under SBA rules; many 7(a) lenders prefer 2+ years' },
+    { fail: creditWeak,             msg: 'SBA has no credit score minimum, but most 7(a) lenders decline scores below about 630' },
+    { warn: creditMarginal,         msg: '631–680 is workable with some lenders; many prefer 680+' },
+    { warn: annualRevenue < 100000, msg: 'Most 7(a) lenders prefer $100K+ in annual revenue (not an SBA rule)' },
     { fail: dscrWeak,               msg: 'DSCR below 1.0x is typically disqualifying for SBA 7(a)' },
-    { warn: dscrMarginal,           msg: 'DSCR below 1.25x requires strong compensating factors' },
+    { warn: dscrMarginal,           msg: 'DSCR under 1.25x on current debt may not leave room for the new payment. SBA requires 1.15x after the new loan (1.10x for loans of $350K or less)' },
     { fail: noTaxReturns && !timeTooNew, msg: 'SBA 7(a) lenders require at least 1–2 years of business tax returns' },
     { warn: onlyOneTaxReturn,       msg: '1 year of returns is acceptable for some SBA lenders; 2 years preferred' },
   ]);
  
   const purpose504OK = ['real_estate','equipment'].includes(purpose);
+  const isRefi        = purpose === 'refinance';
   const sba504 = evalProgram([
-    { fail: !purpose504OK,          msg: 'SBA 504 is only for real estate or major equipment purchases' },
+    { fail: !purpose504OK && !isRefi, msg: 'SBA 504 is for owner-occupied real estate, long-term equipment, or refinancing debt on those assets' },
+    { warn: isRefi,                 msg: '504 can refinance only debt on owner-occupied real estate or long-term equipment' },
+    { fail: isRefi && !timeStrong,  msg: '504 refinancing requires at least 2 years in operation' },
     { fail: hasTaxLiens,            msg: 'Tax liens must be resolved before applying' },
-    { fail: !timeStrong,            msg: '2+ years in business required for SBA 504' },
-    { fail: !creditStrong,          msg: '680+ credit score required for SBA 504' },
-    { fail: annualRevenue < 250000, msg: '$250K+ annual revenue typically required for SBA 504' },
-    { fail: dscrWeak || dscrMarginal, msg: '1.25x+ DSCR required for SBA 504' },
-    { fail: noTaxReturns,           msg: 'SBA 504 requires 2 years of business tax returns' },
+    { warn: !isRefi && (timeTooNew || timeMarginal), msg: 'Newer businesses qualify for 504 with a larger down payment: 15%, or 20% for a special-purpose building' },
+    { warn: !creditStrong,          msg: 'SBA has no credit score minimum, but the bank on the 50% portion often wants 680+' },
+    { warn: annualRevenue < 250000, msg: 'Many 504 bank partners prefer $250K+ in annual revenue (not an SBA rule)' },
+    { fail: dscrWeak,               msg: 'DSCR below 1.0x on current debt is typically disqualifying' },
+    { warn: dscrMarginal,           msg: 'SBA requires 1.15x historical coverage after the new 504 loan' },
+    { fail: noTaxReturns && !timeTooNew, msg: 'Lenders need business tax returns for an existing business' },
   ]);
  
   const loanTooHigh = ['250k_500k','500k_1m','over1m'].includes(loanAmtKey);
@@ -511,7 +515,7 @@ function calculateSBAEligibility(data, dscr, mode) {
  
   return [
     { ...sba7a,     name:'SBA 7(a)',      maxAmount:'Up to $5M',   bestFor:'Working capital, expansion, equipment, refinancing, most purposes' },
-    { ...sba504,    name:'SBA 504',       maxAmount:'Up to $5.5M', bestFor:'Commercial real estate & major equipment only' },
+    { ...sba504,    name:'SBA 504',       maxAmount:'Up to $5M SBA portion ($5.5M manufacturers)', bestFor:'Owner-occupied real estate, long-term equipment, and refinancing on those assets' },
     { ...microloan, name:'SBA Microloan', maxAmount:'Up to $50K',  bestFor:'Startups & small businesses needing modest capital' }
   ];
 }
@@ -725,78 +729,51 @@ function hideLoadingState() {
 }
  
 // ============================================
-// AI EXPLANATION — SIMPLE
+// AI EXPLANATION
+// Only structured results are sent. The prompt is built server-side
+// in netlify/functions/score.js so the endpoint can't be used as a relay.
 // ============================================
+async function requestExplanation(payload) {
+  const response = await fetch('/.netlify/functions/score', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  });
+  if (!response.ok) throw new Error('API error');
+  const result = await response.json();
+  if (!result.explanation) throw new Error('Empty explanation');
+  return result.explanation;
+}
+
+function scoredFactors(factors) {
+  return factors.filter(f=>f.pts!==null).map(f=>({ label:f.label, pts:f.pts, max:f.max, note:f.note }));
+}
+
 async function getAIExplanation(data, score, factors, verdict) {
-  const factorText = factors.filter(f=>f.pts!==null).map(f=>`- ${f.label}: ${f.pts}/${f.max} pts — ${f.note}`).join('\n');
   const purpose = loanPurposeMap[data.loanPurpose];
-  const prompt = `You are a plain-English commercial lending advisor. A business owner completed a loan readiness assessment.
- 
-Score: ${score}/100
-Verdict: ${verdict.text}
-Loan Purpose: ${purpose ? purpose.label : 'Not specified'}
-${purpose ? `SBA Guidance: ${purpose.sba}` : ''}
- 
-Factor breakdown:
-${factorText}
- 
-Write a 3-4 paragraph personal breakdown. Be direct, specific, and honest.
-Paragraph 1: Summarize their overall position. Reference their loan purpose.
-Paragraph 2: Highlight their strongest factors.
-Paragraph 3: Identify their most critical improvement areas with actionable advice.
-Paragraph 4 (if score < 70): Give one concrete next step they can take this month.
-Do not use bullet points. Warm but professional advisor tone. Address them as "you."`;
- 
-  const response = await fetch('/.netlify/functions/score', {
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ prompt })
+  return requestExplanation({
+    mode: 'simple', score, verdict: verdict.text,
+    purpose: purpose ? purpose.label : '', sba: purpose ? purpose.sba : '',
+    factors: scoredFactors(factors)
   });
-  if (!response.ok) throw new Error('API error');
-  const result = await response.json();
-  return result.explanation;
 }
- 
-// ============================================
-// AI EXPLANATION — ADVANCED
-// ============================================
+
 async function getAdvancedAIExplanation(data, score, factors, verdict, dscr, dscrDisplay) {
-  const factorText = factors.filter(f=>f.pts!==null).map(f=>`- ${f.label}: ${f.pts}/${f.max} pts — ${f.note}`).join('\n');
-  const dscrText   = dscr === null ? 'No existing debt service. All income is available to cover a new payment.' : `DSCR: ${dscr.toFixed(2)}x — ${dscrDisplay.meaning}`;
-  const incomeText = data.ebitda > 0 ? `EBITDA: ${formatCurrency(data.ebitda)}` : `Net Income YTD: ${formatCurrency(data.netIncome)} (annualized)`;
-  const purpose    = loanPurposeMap[data.loanPurpose];
-  const prompt = `You are a plain-English commercial lending advisor. A business owner completed an advanced loan readiness assessment.
- 
-Score: ${score}/100
-Verdict: ${verdict.text}
-Loan Purpose: ${purpose ? purpose.label : 'Not specified'}
-${purpose ? `SBA Guidance: ${purpose.sba}` : ''}
-${dscrText}
-${incomeText}
-Average Monthly Revenue: ${formatCurrency(data.monthlyRevenue)}
-Monthly Debt Obligations: ${formatCurrency(data.monthlyDebt)}
- 
-Factor breakdown:
-${factorText}
- 
-Write a 4-paragraph personal breakdown. Be direct, specific, and honest.
-Paragraph 1: Summarize their financial position. Reference their DSCR and loan purpose specifically.
-Paragraph 2: Highlight their two or three strongest factors.
-Paragraph 3: Identify the most critical improvement areas with actionable advice.
-Paragraph 4: Give one concrete next step they can take this month.
-Do not use bullet points. Warm but professional advisor tone. Address them as "you."`;
- 
-  const response = await fetch('/.netlify/functions/score', {
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ prompt })
+  const purpose = loanPurposeMap[data.loanPurpose];
+  return requestExplanation({
+    mode: 'advanced', score, verdict: verdict.text,
+    purpose: purpose ? purpose.label : '', sba: purpose ? purpose.sba : '',
+    factors: scoredFactors(factors),
+    dscr: dscr === null ? null : Math.round(dscr * 100) / 100,
+    monthlyRevenue: Number(data.monthlyRevenue) || 0,
+    monthlyDebt: Number(data.monthlyDebt) || 0
   });
-  if (!response.ok) throw new Error('API error');
-  const result = await response.json();
-  return result.explanation;
 }
- 
+
 // ============================================
 // RENDER SBA SECTION
 // ============================================
+const SBA_CITIZENSHIP_NOTE = `<div class="sba-elig-note" style="margin-top:12px;color:rgba(255,255,255,.7)">Note: since March 1, 2026, SBA 7(a) and 504 loans require every owner to be a U.S. citizen or U.S. national whose primary home is in the U.S. Green card holders no longer qualify. This tool doesn't ask about citizenship.</div>`;
+
 function renderSBASection(sbaEl, sbaEligibility, mode, data) {
   if (!sbaEl) return;
  
@@ -812,7 +789,7 @@ function renderSBASection(sbaEl, sbaEligibility, mode, data) {
       const showCTA = (prog.status === 'eligible' || prog.status === 'possible')
                    && prog.name === 'SBA 7(a)';
       const ctaHTML = showCTA
-        ? `<a href="${smartbizUrl}" target="_blank" rel="noopener sponsored" class="sba-elig-cta">Apply via SmartBiz →</a>`
+        ? `<a href="${smartbizUrl}" target="_blank" rel="noopener sponsored" class="sba-elig-cta">Apply via SmartBiz →</a><span style="font-size:.72rem;color:rgba(255,255,255,.5);margin-left:8px;">Partner link. We may earn a commission.</span>`
         : '';
  
       return `
@@ -830,13 +807,15 @@ function renderSBASection(sbaEl, sbaEligibility, mode, data) {
     sbaEl.style.display = 'block';
     sbaEl.innerHTML = `
       <div class="sba-eyebrow">SBA Loan Eligibility — Based on Your Profile</div>
-      <div class="sba-elig-cards">${cards}</div>`;
+      <div class="sba-elig-cards">${cards}</div>
+      ${SBA_CITIZENSHIP_NOTE}`;
  
   } else {
     const purpose = data && data.loanPurpose ? loanPurposeMap[data.loanPurpose] : null;
     sbaEl.style.display = 'block';
     sbaEl.innerHTML = `
       ${purpose ? `<div class="sba-eyebrow">SBA Loan Match — ${purpose.label}</div><div class="sba-text">${purpose.sba}</div>` : ''}
+      ${SBA_CITIZENSHIP_NOTE}
       <div class="sba-nudge">💡 Want a full SBA eligibility breakdown? <strong>Switch to Advanced DSCR mode</strong> above — it checks your profile against SBA 7(a), SBA 504, and SBA Microloan requirements using your actual financial data.</div>`;
   }
 }
