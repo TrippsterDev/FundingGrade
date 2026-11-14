@@ -127,7 +127,13 @@ Be direct, specific, and honest. Do not promise approval or quote rates. Do not 
     });
 
     if (!response.ok) {
-      console.error('Anthropic API error:', response.status, await response.text());
+      const detail = await response.text();
+      console.error('Anthropic API error:', response.status, detail);
+      if (isPreview) {
+        let type = '', msg = ''; try { const e = JSON.parse(detail).error || {}; type = e.type || ''; msg = (e.message || '').slice(0, 120); } catch (e) {}
+        const k = process.env.ANTHROPIC_API_KEY || '';
+        return { statusCode: 502, body: JSON.stringify({ upstream: response.status, type, msg, keyLen: k.length, prefixOk: /^\s*["']?sk-ant-api/.test(k) }) };
+      }
       return bad(502, 'AI service unavailable');
     }
 
