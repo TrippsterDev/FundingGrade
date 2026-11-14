@@ -109,7 +109,7 @@ Factor breakdown:
 ${lines.join('\n')}
 
 ${paragraphs}
-Be direct, specific, and honest. Do not promise approval or quote rates. Write plain text paragraphs only: no headings, no markdown, no bold, no bullet points. Warm but professional tone. Address them as "you."`;
+Be direct, specific, and honest. Do not promise approval or quote rates. DSCR compares cash flow (EBITDA) to debt payments, not revenue to debt payments, so never describe revenue as covering debt. Monthly revenue is context only. Write plain text paragraphs only: no headings, no markdown, no bold, no bullet points. Warm but professional tone. Address them as "you."`;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
