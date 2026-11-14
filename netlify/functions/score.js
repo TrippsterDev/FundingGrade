@@ -109,7 +109,7 @@ Factor breakdown:
 ${lines.join('\n')}
 
 ${paragraphs}
-Be direct, specific, and honest. Do not promise approval or quote rates. Do not use bullet points. Warm but professional tone. Address them as "you."`;
+Be direct, specific, and honest. Do not promise approval or quote rates. Write plain text paragraphs only: no headings, no markdown, no bold, no bullet points. Warm but professional tone. Address them as "you."`;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -138,11 +138,20 @@ Be direct, specific, and honest. Do not promise approval or quote rates. Do not 
       .join('\n')
       .trim();
     if (!explanation) return bad(502, 'Empty response');
+    // Strip any stray markdown so it reads cleanly on the page
+    const clean = explanation
+      .split('\n')
+      .filter(line => !/^\s*#{1,6}\s/.test(line))
+      .join('\n')
+      .replace(/\*\*(.+?)\*\*/g, '$1')
+      .replace(/^\s*[-*]\s+/gm, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ explanation })
+      body: JSON.stringify({ explanation: clean })
     };
   } catch (e) {
     console.error('Function error:', e);
